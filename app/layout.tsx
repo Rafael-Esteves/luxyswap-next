@@ -2,16 +2,68 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const gravesend = localFont({
+  src: [
+    {
+      path: './fonts/gravesend/gravesend-sans-fine.ttf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: './fonts/gravesend/gravesend-sans-light.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/gravesend/gravesend-sans-medium.ttf',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: './fonts/gravesend/gravesend-sans-bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+  
+  ],
+  variable: "--font-gravesend"
+})
+
+const scandia = localFont({
+  src: [
+    {
+      path: './fonts/scandia/Scandia-Regular.woff',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/scandia/Scandia-RegularItalic.woff',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: './fonts/scandia/Scandia-Medium.woff',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: './fonts/scandia/Scandia-MediumItalic.woff',
+      weight: '500',
+      style: 'italic',
+    },
+    {
+      path: './fonts/scandia/Scandia-Bold.woff',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: './fonts/scandia/Scandia-BoldItalic.woff',
+      weight: '700',
+      style: 'italic',
+    },
+  ],
+  variable: '--font-scandia'
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,7 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${scandia.variable} ${gravesend.variable} antialiased`}
       >
         {children}
       </body>
