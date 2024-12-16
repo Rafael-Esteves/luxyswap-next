@@ -5,7 +5,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function Swapper() {
   return (
@@ -62,9 +64,9 @@ export function Swapper() {
           </span>
         </div>
       </div>
-      <Button variant='outline' className="bg-transparent rounded-full h-16 w-2/3 mt-2">
+      <Link href='/swap' className={cn(buttonVariants({ variant: 'outline' }), "bg-transparent rounded-full h-16 w-2/3 mt-2")}>
         <span className="text-2xl font-gravesend font-bold">SWAP</span>
-      </Button>
+      </Link>
     </div>
   );
 }
