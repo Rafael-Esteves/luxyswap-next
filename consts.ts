@@ -90,3 +90,134 @@ export const maioresBaixas = [
     isUp: false
   },
 ]
+
+export const historicData = [
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    fromAmount: "1,00",
+    toIcon: "/icons/eth.svg",
+    toAmount: "26,34",
+    date: "05/12/2024 15:30",
+  },
+];
+
+export const pairCoins = [
+  {
+    fromIcon: "/icons/btc.svg",
+    toIcon: "/icons/eth.svg",
+    fromText: "BTC",
+    toText: "ETH",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    toIcon: "/icons/eth.svg",
+    fromText: "BTC",
+    toText: "ETH",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    toIcon: "/icons/eth.svg",
+    fromText: "BTC",
+    toText: "ETH",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    toIcon: "/icons/eth.svg",
+    fromText: "BTC",
+    toText: "ETH",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    toIcon: "/icons/eth.svg",
+    fromText: "BTC",
+    toText: "ETH",
+  },
+  {
+    fromIcon: "/icons/btc.svg",
+    toIcon: "/icons/eth.svg",
+    fromText: "BTC",
+    toText: "ETH",
+  },
+];
+
+export const afiliates = [
+  {
+    name: 'lorem ipsum dolem',
+    totalAmount: 'R$120.000,00',
+    restAmount: 'R$00,00'
+  },
+  {
+    name: 'lorem ipsum dolem',
+    totalAmount: 'R$120.000,00',
+    restAmount: 'R$00,00'
+  },
+  {
+    name: 'lorem ipsum dolem',
+    totalAmount: 'R$120.000,00',
+    restAmount: 'R$00,00'
+  },
+  {
+    name: 'lorem ipsum dolem',
+    totalAmount: 'R$120.000,00',
+    restAmount: 'R$00,00'
+  },
+  {
+    name: 'lorem ipsum dolem',
+    totalAmount: 'R$120.000,00',
+    restAmount: 'R$00,00'
+  },
+  {
+    name: 'lorem ipsum dolem',
+    totalAmount: 'R$120.000,00',
+    restAmount: 'R$00,00'
+  },
+]
