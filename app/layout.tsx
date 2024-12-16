@@ -32,6 +32,16 @@ const gravesend = localFont({
 const scandia = localFont({
   src: [
     {
+      path: './fonts/scandia/Scandia-Light.woff',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: './fonts/scandia/Scandia-LightItalic.woff',
+      weight: '300',
+      style: 'italic',
+    },
+    {
       path: './fonts/scandia/Scandia-Regular.woff',
       weight: '400',
       style: 'normal',

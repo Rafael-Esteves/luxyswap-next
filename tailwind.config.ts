@@ -11,9 +11,11 @@ export default {
   	extend: {
   		backgroundImage: {
   			'purple-gradient': 'linear-gradient(262.22deg, #9900FF -48.18%, #000A4C 170%)',
+				'swap-gradient': 'linear-gradient(0deg, #000A4C, #000A4C),linear-gradient(139.16deg, rgba(73, 34, 135, 0) 23.18%, rgba(73, 34, 135, 0.8) 90.85%)',
   			general: 'url("/bg/general-bg.png")',
   			second: 'url("/bg/second-section.svg")',
-  			hero: 'url("/bg/hero-bg.png")'
+  			hero: 'url("/bg/hero-bg.png")',
+				swap: 'url("/bg/swap.png")'
   		},
   		fontFamily: {
   			gravesend: 'var(--font-gravesend)',
