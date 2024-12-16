@@ -1,5 +1,3 @@
-import { Globe, Logo } from "./ui/icons";
-
 export function Navbar() {
   return (
     <div className="w-full flex items-center justify-between py-4 px-5">
