@@ -1,101 +1,220 @@
-import Image from "next/image";
+import { AnimatedContainer } from "@/components/ui/animated-container";
+import { MaxWidthWrapper } from "@/components/ui/max-width-wrapper";
+import { Navbar } from "@/components/navbar";
+import { Swapper } from "@/components/swapper";
+import { ChevronDown } from "lucide-react";
+import { Faq } from "@/components/faq";
+import { GraphCard } from "@/components/graph-card";
+import { maioresAltas, maioresBaixas, popularCriptos } from "@/consts";
+import { Footer } from "@/components/footer";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="w-full bg-general relative bg-cover bg-no-repeat">
+      <AnimatedContainer className="w-full abolsute top-0 bg-hero mb-12 pb-20">
+        <Navbar />
+        <MaxWidthWrapper className="flex flex-col items-center justify-center text-center">
+          <div className="mb-12 w-full pb-20 md:pb-0 md:mt-20 flex items-center justify-between text-center">
+            <div className="text-left max-w-[600px]">
+              <h1 className="font-gravesend font-bold text-6xl leading-[70px] tracking-[-2%] uppercase">
+                Swaps rápidos,{" "}
+                <span className="text-[#627EEA]">com privacidade</span>
+              </h1>
+              <span className="font-scandia leading-8 text-xl">
+                Seja soberano, faça swaps de criptomoedas com privacidade,{" "}
+                <b>segurança e transparência</b> em cada transação.
+              </span>
+            </div>
+            <Swapper />
+          </div>
+        </MaxWidthWrapper>
+        <div className="w-full flex items-center justify-center">
+          <ChevronDown className="size-10" />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </AnimatedContainer>
+      
+      <AnimatedContainer className="w-full mt-20 md:mt-56">
+        <MaxWidthWrapper>
+          <div className="flex w-full flex-col items-center justify-center text-center">
+            <h2 className="font-gravesend font-bold text-6xl mb-14 leading-[70px] tracking-[-2%] uppercase">
+              Como a plataforma <br />
+              <span className="text-[#9900FF]">funciona</span>
+            </h2>
+
+            <div className="flex flex-wrap gap-10 items-center">
+              <div className="flex flex-col w-[400px]">
+                <div className="bg-[#6432B4] h-[337px] w-full rounded-t-[36px] p-4 gap-10 flex flex-col items-start justify-start relative">
+                  <img
+                    src="/icons/lamp-purple.svg"
+                    className="absolute right-4"
+                    alt=""
+                  />
+                  <div className="flex items-center justify-center gap-5 bg-[#050C4F] rounded-full h-[57px] px-5">
+                    <span className="font-gravesend font-bold text-xl leading-6 text-[#BB91FF]">
+                      COMO USAR?
+                    </span>
+                    <img
+                      src="/icons/lamp-purple-light.svg"
+                      className="w-6 h-8"
+                      alt=""
+                    />
+                  </div>
+
+                  <h2
+                    style={{ letterSpacing: "-2%" }}
+                    className="font-gravesend max-w-[309px] mb-10 font-bold text-[40px] uppercase leading-[40px] text-left text-white"
+                  >
+                    O seu <span className="text-[#000A4C]">guia</span>{" "}
+                    definitivo está aqui
+                  </h2>
+                </div>
+
+                <div className="bg-white flex items-center justify-center w-full h-[170px] rounded-b-[36px]">
+                  <img src="/icons/play.svg" alt="" />
+                </div>
+              </div>
+
+              <div className="bg-[#6F00FF] h-[507px] w-[400px] rounded-[36px] p-4 gap-10 flex flex-col items-start justify-start relative">
+                <img
+                  src="/icons/lock-big.svg"
+                  className="absolute left-4 bottom-5"
+                  alt=""
+                />
+                <div className="flex items-center justify-center gap-5 bg-[#050C4F] rounded-full h-[57px] px-5">
+                  <span className="font-gravesend font-bold text-xl leading-6 text-[#BB91FF]">
+                    PRIVACIDADE
+                  </span>
+                  <img src="/icons/lock.svg" className="w-6 h-8" alt="" />
+                </div>
+
+                <h2
+                  style={{ letterSpacing: "-2%" }}
+                  className="font-gravesend max-w-[309px] mb-10 font-bold text-[40px] uppercase leading-[40px] text-left text-white"
+                >
+                  Mantendo a <span className="text-[#000A4C]">privacidade</span>{" "}
+                  em transações
+                </h2>
+
+                <img
+                  src="/icons/arrow-btn.svg"
+                  className="absolute w-[88px] h-10 right-4 bottom-4"
+                  alt=""
+                />
+              </div>
+
+              <div className="bg-[#9900FF] h-[507px] w-[400px] rounded-[36px] p-4 gap-10 flex flex-col items-start justify-start relative">
+                <img
+                  src="/icons/security-purple.svg"
+                  className="absolute right-4 top-5"
+                  alt=""
+                />
+                <div className="flex items-center justify-center gap-5 bg-[#050C4F] rounded-full h-[57px] px-5">
+                  <span className="font-gravesend font-bold text-xl leading-6 text-[#BB91FF]">
+                    SEGURANÇA
+                  </span>
+                  <img
+                    src="/icons/security-purple-light.svg"
+                    className="w-6 h-8"
+                    alt=""
+                  />
+                </div>
+
+                <h2
+                  style={{ letterSpacing: "-2%" }}
+                  className="font-gravesend max-w-[352px] mb-10 font-bold text-[40px] uppercase leading-[40px] text-left text-white"
+                >
+                  Como garantimos <br /> a{" "}
+                  <span className="text-[#000A4C]">integridade</span> dos seus
+                  ativos
+                </h2>
+
+                <img
+                  src="/icons/arrow-btn.svg"
+                  className="absolute w-[88px] h-10 right-4 bottom-4"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+        </MaxWidthWrapper>
+      </AnimatedContainer>
+
+      <AnimatedContainer className="w-full mt-20 md:mt-56">
+        <MaxWidthWrapper className="flex items-center justify-center">
+          <div className="bg-[#D9D9D9]/10 rounded-[50px] gap-24 flex flex-col items-center justify-center w-full max-w-[1352px] h-[785px]">
+            <h2 className="font-gravesend font-bold text-6xl  leading-[60px] tracking-[-2%] uppercase">
+              Fazer swaps nunca <br /> foi
+              <span className="text-[#9900FF]">tão fácil</span>
+            </h2>
+
+            <div className="flex items-center justify-center gap-6">
+              <div className="flex items-end justify-center gap-5">
+                <span className="font-gravesend font-bold text-[96px] leading-[90px] tracking-tighter">
+                  1
+                </span>
+                <span className="font-gravesend w-[200px] font-bold text-2xl tracking-tighter">
+                  Escolha o par de moedas
+                </span>
+              </div>
+
+              <div className="flex items-end justify-center gap-5">
+                <span className="font-gravesend font-bold text-[96px] leading-[90px] tracking-tighter">
+                  2
+                </span>
+                <span className="font-gravesend w-[200px] font-bold text-2xl tracking-tighter">
+                  Insira sua carteira
+                </span>
+              </div>
+
+              <div className="flex items-end justify-center gap-5">
+                <span className="font-gravesend font-bold text-[96px] leading-[90px] tracking-tighter">
+                  3
+                </span>
+                <span className="font-gravesend w-[260px] font-bold text-2xl tracking-tighter">
+                  Confirme e finalize a transação
+                </span>
+              </div>
+            </div>
+
+            <span className="w-2/3 font-scandia text-2xl text-center">
+              <b>Texto complementar:</b> Em poucos minutos, seu swap será
+              concluído com segurança, praticidade e total privacidade. <br />
+              <b>Dúvidas? Contate-nos.</b>
+            </span>
+          </div>
+        </MaxWidthWrapper>
+      </AnimatedContainer>
+
+      <AnimatedContainer className="w-full mt-20 md:mt-56">
+        <MaxWidthWrapper>
+          <div className="flex items-center justify-between">
+            <h2 className="font-gravesend font-bold text-6xl mb-14 leading-[70px] tracking-[-2%] uppercase">
+              explore algumas <br />
+              <span className="text-[#627EEA]">dúvidas comuns</span>
+            </h2>
+
+            <div className="max-w-[650px] w-full">
+              <Faq />
+            </div>
+          </div>
+        </MaxWidthWrapper>
+      </AnimatedContainer>
+
+      <AnimatedContainer className="w-full mt-20 md:mt-56">
+        <MaxWidthWrapper>
+          <div className="grid grid-cols-3 justify-center gap-10">
+            <GraphCard array={popularCriptos} title="Criptos populares" />
+            <GraphCard array={maioresAltas} title="maiores altaS" />
+            <GraphCard array={maioresBaixas} title="maiores baixas" />
+          </div>
+        </MaxWidthWrapper>
+      </AnimatedContainer>
+
+      <AnimatedContainer className="w-full mt-20 md:mt-56">
+        <MaxWidthWrapper>
+          <Footer />
+        </MaxWidthWrapper>
+      </AnimatedContainer>
     </div>
   );
 }
