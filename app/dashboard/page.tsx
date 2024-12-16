@@ -1,9 +1,9 @@
-import { Navbar } from "@/components/navbar";
 import { AnimatedContainer } from "@/components/ui/animated-container";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { afiliates, historicData, pairCoins } from "@/consts";
 import { cn } from "@/lib/utils";
 import { Ellipsis, MoveDown, MoveRight, MoveUp, Search } from "lucide-react";
+import Image from "next/image";
 
 interface Props {
   fromIcon: string;
@@ -15,8 +15,8 @@ interface Props {
 function IconRow({ fromIcon, toIcon, fromText, toText }: Props) {
   return (
     <div className="flex items-center justify-center gap-3 rounded-full bg-[#FFFFFF80] py-2 pr-4 pl-3">
-      <img src={fromIcon} className="size-8" alt={`${fromText} icon`} />
-      <img src={toIcon} className="size-8" alt={`${toText} icon`} />
+      <Image width={32} height={32} src={fromIcon} className="size-8" alt={`${fromText} icon`} />
+      <Image width={32} height={32} src={toIcon} className="size-8" alt={`${toText} icon`} />
       <span className="font-gravesend font-bold text-2xl tracking-tighter text-[#000A4C]">
         {fromText}
       </span>
@@ -35,7 +35,7 @@ export default function Page() {
         <AnimatedContainer className="w-full flex items-center justify-center flex-col p-2">
           <div className="w-full flex  flex-col py-4 px-5 rounded-[70px] bg-[#D9D9D91A]">
             <div className="w-full flex items-center justify-between mb-20">
-              <img src="/icons/logo.svg" alt="" />
+              <Image width={307} height={36} src="/icons/logo.svg" alt="" />
               <div className="flex items-center justify-center gap-4">
                 <div className="flex items-center p-2 rounded-full bg-[#627EEA]">
                   <Button className="size-[60px] font-gravesend text-2xl tracking-tighter text-[#627EEA] flex items-center justify-center rounded-full bg-white">
@@ -171,7 +171,9 @@ export default function Page() {
                           >
                             <td>
                               <div className="flex pl-10 py-2 items-center justify-start gap-2">
-                                <img
+                                <Image  
+                                  height={32}
+                                  width={32}
                                   src={item.fromIcon}
                                   className="size-8"
                                   alt="From Icon"
@@ -183,7 +185,9 @@ export default function Page() {
                             </td>
                             <td>
                               <div className="flex items-center justify-start gap-2">
-                                <img
+                                <Image
+                                height={32}
+                                width={32}
                                   src={item.toIcon}
                                   className="size-8"
                                   alt="To Icon"
