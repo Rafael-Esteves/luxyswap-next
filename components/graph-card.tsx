@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { MoveDown, MoveUp } from "lucide-react";
+import Image from "next/image";
 
 interface Props {
   title: string;
@@ -21,7 +22,7 @@ export function GraphCard({ array, title }: Props) {
       {array.map((item, i) => (
         <div key={item.img} className={cn("flex w-full items-center justify-between px-5 py-4 rounded-[50px]", i % 2 === 1 ? "bg-[#FFFFFF0F]" : "bg-transparent")}>
           <div className="flex items-center justufy-center gap-2">
-            <img src={item.img} className="size-9" alt="" />
+            <Image width={36} height={36} src={item.img} className="size-9" alt="" />
             <span className="font-gravesend font-bold text-xl">
               {item.name}
             </span>

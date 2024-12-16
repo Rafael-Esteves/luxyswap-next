@@ -7,6 +7,7 @@ import { Faq } from "@/components/faq";
 import { GraphCard } from "@/components/graph-card";
 import { maioresAltas, maioresBaixas, popularCriptos } from "@/consts";
 import { Footer } from "@/components/footer";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -44,7 +45,9 @@ export default function Home() {
             <div className="flex flex-wrap gap-10 items-center">
               <div className="flex flex-col w-[400px]">
                 <div className="bg-[#6432B4] h-[337px] w-full rounded-t-[36px] p-4 gap-10 flex flex-col items-start justify-start relative">
-                  <img
+                  <Image
+                    width={229}
+                    height={311}
                     src="/icons/lamp-purple.svg"
                     className="absolute right-4"
                     alt=""
@@ -53,7 +56,9 @@ export default function Home() {
                     <span className="font-gravesend font-bold text-xl leading-6 text-[#BB91FF]">
                       COMO USAR?
                     </span>
-                    <img
+                    <Image
+                    width={24}
+                    height={32}
                       src="/icons/lamp-purple-light.svg"
                       className="w-6 h-8"
                       alt=""
@@ -70,12 +75,14 @@ export default function Home() {
                 </div>
 
                 <div className="bg-white flex items-center justify-center w-full h-[170px] rounded-b-[36px]">
-                  <img src="/icons/play.svg" alt="" />
+                  <Image height={29} width={29} src="/icons/play.svg" alt="" />
                 </div>
               </div>
 
               <div className="bg-[#6F00FF] h-[507px] w-[400px] rounded-[36px] p-4 gap-10 flex flex-col items-start justify-start relative">
-                <img
+                <Image
+                height={367}
+                width={256}
                   src="/icons/lock-big.svg"
                   className="absolute left-4 bottom-5"
                   alt=""
@@ -84,7 +91,7 @@ export default function Home() {
                   <span className="font-gravesend font-bold text-xl leading-6 text-[#BB91FF]">
                     PRIVACIDADE
                   </span>
-                  <img src="/icons/lock.svg" className="w-6 h-8" alt="" />
+                  <Image width={24} height={32} src="/icons/lock.svg" className="w-6 h-8" alt="" />
                 </div>
 
                 <h2
@@ -95,15 +102,20 @@ export default function Home() {
                   em transações
                 </h2>
 
-                <img
+                <Image
+                  height={40}
+                  width={88}
                   src="/icons/arrow-btn.svg"
+
                   className="absolute w-[88px] h-10 right-4 bottom-4"
                   alt=""
                 />
               </div>
 
               <div className="bg-[#9900FF] h-[507px] w-[400px] rounded-[36px] p-4 gap-10 flex flex-col items-start justify-start relative">
-                <img
+                <Image
+                  width={256}
+                  height={304}
                   src="/icons/security-purple.svg"
                   className="absolute right-4 top-5"
                   alt=""
@@ -112,9 +124,11 @@ export default function Home() {
                   <span className="font-gravesend font-bold text-xl leading-6 text-[#BB91FF]">
                     SEGURANÇA
                   </span>
-                  <img
+                  <Image
                     src="/icons/security-purple-light.svg"
                     className="w-6 h-8"
+                    width={24}
+                    height={32}
                     alt=""
                   />
                 </div>
@@ -128,7 +142,9 @@ export default function Home() {
                   ativos
                 </h2>
 
-                <img
+                <Image
+                  height={40}
+                  width={88}
                   src="/icons/arrow-btn.svg"
                   className="absolute w-[88px] h-10 right-4 bottom-4"
                   alt=""

@@ -5,9 +5,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export function Swapper() {
   return (
@@ -17,7 +18,7 @@ export function Swapper() {
         <div className="flex items-center justify-between gap-28">
           <DropdownMenu>
             <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
-              <img className="size-20" src="/icons/btc.svg" alt="" />
+              <Image width={80} height={80} className="size-20" src="/icons/btc.svg" alt="" />
               <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                 BTC
               </span>
@@ -25,7 +26,7 @@ export function Swapper() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 py-5 px-12 rounded-[50px]">
               <DropdownMenuLabel className="flex items-center cursor-pointer justify-center gap-2">
-                <img className="size-20" src="/icons/btc.svg" alt="" />
+                <Image width={80} height={80} className="size-20" src="/icons/btc.svg" alt="" />
                 <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                   BTC
                 </span>
@@ -43,7 +44,7 @@ export function Swapper() {
         <div className="flex items-center justify-between gap-28">
           <DropdownMenu>
             <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
-                <img className="size-20" src="/icons/eth.svg" alt="" />
+                <Image width={80} height={80} className="size-20" src="/icons/eth.svg" alt="" />
                 <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                   ETH
                 </span>
@@ -51,7 +52,7 @@ export function Swapper() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 py-5 px-12 rounded-[50px]">
               <DropdownMenuLabel className="flex items-center cursor-pointer justify-center gap-2">
-                <img className="size-20" src="/icons/eth.svg" alt="" />
+                <Image width={80} height={80} className="size-20" src="/icons/eth.svg" alt="" />
                 <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                   ETH
                 </span>
