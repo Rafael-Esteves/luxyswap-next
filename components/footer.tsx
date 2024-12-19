@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <div className="w-full">
+    <div className="w-full pb-5">
       <div className="w-full flex items-start justify-between">
         <div className="flex flex-col items-start justify-start">
           <Image width={414} height={50} src="/icons/logo.svg" alt="" />
