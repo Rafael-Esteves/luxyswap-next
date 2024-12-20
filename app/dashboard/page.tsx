@@ -234,7 +234,7 @@ export default function Page() {
                     </Button>
                   </div>
 
-                  <div className="flex flex-col mt-2 lg:mt-5 items-start px-3 py-5 lg:py-7 w-full bg-[#D1D1D1] rounded-[20px] lg:rounded-[40px] gap-3 lg:gap-5">
+                  <div className="flex flex-col mt-2 lg:mt-5 items-start px-3 py-5 lg:py-7 w-full bg-[#D1D1D1] rounded-[20px] lg:rounded-[40px] gap-3 lg:gap-5 lg:px-10">
                     <h1 className="font-bold text-[#000A4C] font-gravesend text-base lg:text-2xl mb-2 lg:mb-4 tracking-tighter">
                       pares de moedas
                     </h1>
