@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-interface Props {
+interface Props extends React.ComponentProps<typeof motion.div> {
   className?: string;
   children: React.ReactNode;
   delay?: number;
@@ -15,6 +15,7 @@ export const AnimatedContainer = ({
   className,
   delay = 0.2,
   reverse,
+  ...rest
 }: Props) => {
   return (
     <motion.div
@@ -23,6 +24,7 @@ export const AnimatedContainer = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false }}
       transition={{ delay: delay, duration: 0.4, ease: "easeInOut" }}
+      {...rest}
     >
       {children}
     </motion.div>

@@ -8,6 +8,8 @@ import { GraphCard } from "@/components/graph-card";
 import { maioresAltas, maioresBaixas, popularCriptos } from "@/consts";
 import { Footer } from "@/components/footer";
 import Image from "next/image";
+import { UpDown } from "@/components/up-down-container";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -30,11 +32,13 @@ export default function Home() {
           </div>
         </MaxWidthWrapper>
         <div className="w-full flex items-center justify-center">
-          <ChevronDown className="size-10" />
+          <Link href='#section2'>
+            <UpDown />
+          </Link>
         </div>
       </AnimatedContainer>
       
-      <AnimatedContainer className="w-full mt-20 md:mt-56">
+      <AnimatedContainer id="section2" className="w-full mt-20 md:mt-56">
         <MaxWidthWrapper>
           <div className="flex w-full flex-col items-center justify-center text-center">
             <h2 className="font-gravesend font-bold text-6xl mb-14 leading-[70px] tracking-[-2%] uppercase">
@@ -155,11 +159,11 @@ export default function Home() {
         </MaxWidthWrapper>
       </AnimatedContainer>
 
-      <AnimatedContainer className="w-full mt-20 md:mt-56">
+      <AnimatedContainer id="section3" className="w-full mt-20 md:mt-56">
         <MaxWidthWrapper className="flex items-center justify-center">
           <div className="bg-[#D9D9D9]/10 rounded-[50px] gap-24 flex flex-col items-center justify-center w-full max-w-[1352px] h-[785px]">
-            <h2 className="font-gravesend font-bold text-6xl  leading-[60px] tracking-[-2%] uppercase">
-              Fazer swaps nunca <br /> foi
+            <h2 className="font-gravesend font-bold text-6xl max-w-[220px] lg:max-w-[660px] text-center leading-[60px] tracking-[-2%] uppercase">
+              Fazer swaps nunca foi{" "}
               <span className="text-[#9900FF]">tão fácil</span>
             </h2>
 
@@ -201,7 +205,7 @@ export default function Home() {
         </MaxWidthWrapper>
       </AnimatedContainer>
 
-      <AnimatedContainer className="w-full mt-20 md:mt-56">
+      <AnimatedContainer id="section4" className="w-full mt-20 md:mt-56">
         <MaxWidthWrapper>
           <div className="flex items-center justify-between">
             <h2 className="font-gravesend font-bold text-6xl mb-14 leading-[70px] tracking-[-2%] uppercase">
@@ -216,7 +220,7 @@ export default function Home() {
         </MaxWidthWrapper>
       </AnimatedContainer>
 
-      <AnimatedContainer className="w-full mt-20 md:mt-56">
+      <AnimatedContainer id="section5" className="w-full mt-20 md:mt-56">
         <MaxWidthWrapper>
           <div className="grid grid-cols-3 justify-center gap-10">
             <GraphCard array={popularCriptos} title="Criptos populares" />
@@ -226,7 +230,7 @@ export default function Home() {
         </MaxWidthWrapper>
       </AnimatedContainer>
 
-      <AnimatedContainer className="w-full mt-20 md:mt-56">
+      <AnimatedContainer id="section6" className="w-full mt-20 md:mt-56">
         <MaxWidthWrapper>
           <Footer />
         </MaxWidthWrapper>
