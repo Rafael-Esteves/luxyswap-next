@@ -2,7 +2,7 @@ import { Navbar } from "@/components/navbar";
 import { AnimatedContainer } from "@/components/ui/animated-container";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowLeftRight, Copy } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
