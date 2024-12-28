@@ -11,7 +11,7 @@ export function UpDown() {
       initial={{ transform: "translateY(0px)", opacity: 0 }}
       animate={{ transform: "translateY(70px)", opacity: 1 }}
     >
-      <ChevronDown className="size-10" />
+      <ChevronDown className="size-7 lg:size-10" />
     </motion.div>
   );
 }
