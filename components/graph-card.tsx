@@ -15,14 +15,14 @@ interface Props {
 
 export function GraphCard({ array, title }: Props) {
   return (
-    <div className="rounded-[50px] w-full bg-[#000A4C] flex flex-col items-start justify-start px-5 py-8">
-      <span className="font-gravesend font-bold mb-6 text-2xl leading-6 uppercase">
+    <div className="rounded-[50px] max-w-[323px] lg:max-w-[484px] w-full bg-[#000A4C] flex flex-col items-start justify-start px-5 py-8">
+      <span className="font-gravesend font-bold mb-6 text-2xl leading-6 uppercase tracking-tighter">
         {title}
       </span>
       {array.map((item, i) => (
         <div key={item.img} className={cn("flex w-full items-center justify-between px-5 py-4 rounded-[50px]", i % 2 === 1 ? "bg-[#FFFFFF0F]" : "bg-transparent")}>
           <div className="flex items-center justufy-center gap-2">
-            <Image width={36} height={36} src={item.img} className="size-9" alt="" />
+            <Image width={36} height={36} src={item.img} className="size-7 lg:size-9" alt="" />
             <span className="font-gravesend font-bold text-xl">
               {item.name}
             </span>

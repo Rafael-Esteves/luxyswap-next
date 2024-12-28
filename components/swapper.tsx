@@ -13,60 +13,60 @@ import Image from "next/image";
 export function Swapper() {
   return (
     <div className="select-none flex flex-col gap-2 items-center">
-      <div className="bg-[#D9D9D9]/15 flex flex-col items-start justify-start gap-4 py-5 pb-20 px-12 rounded-[50px]">
-        <span className="font-scandia text-xl">De</span>
+      <div className="bg-[#D9D9D9]/15 flex flex-col items-start justify-start gap-4 py-5 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:rounded-[50px]">
+        <span className="font-scandia text-xs lg:text-xl">De</span>
         <div className="flex items-center justify-between gap-28">
           <DropdownMenu>
             <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
-              <Image width={80} height={80} className="size-20" src="/icons/btc.svg" alt="" />
-              <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
+              <Image width={80} height={80} className="size-10 lg:size-20" src="/icons/btc.svg" alt="" />
+              <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                 BTC
               </span>
-              <ChevronDown className="size-8 mt-2" />
+              <ChevronDown className="size-4 lg:size-8 mt-2" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 py-5 px-12 rounded-[50px]">
+            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:">
               <DropdownMenuLabel className="flex items-center cursor-pointer justify-center gap-2">
-                <Image width={80} height={80} className="size-20" src="/icons/btc.svg" alt="" />
-                <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
+                <Image width={80} height={80} className="size-10 lg:size-20" src="/icons/btc.svg" alt="" />
+                <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                   BTC
                 </span>
               </DropdownMenuLabel>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white">
+          <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white">
             0.00
           </span>
         </div>
       </div>
-      <div className="bg-purple-gradient flex flex-col items-start justify-start gap-4 py-5 pb-20 px-12 rounded-[50px]">
-        <span className="font-scandia text-xl">Para</span>
+      <div className="bg-purple-gradient flex flex-col items-start justify-start gap-4 py-5 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:">
+        <span className="font-scandia text-xs lg:text-xl">Para</span>
         <div className="flex items-center justify-between gap-28">
           <DropdownMenu>
             <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
-                <Image width={80} height={80} className="size-20" src="/icons/eth.svg" alt="" />
-                <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
+                <Image width={80} height={80} className="size-10 lg:size-20" src="/icons/eth.svg" alt="" />
+                <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                   ETH
                 </span>
-              <ChevronDown className="size-8 mt-2" />
+              <ChevronDown className="size-4 lg:size-8 mt-2" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 py-5 px-12 rounded-[50px]">
+            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:">
               <DropdownMenuLabel className="flex items-center cursor-pointer justify-center gap-2">
-                <Image width={80} height={80} className="size-20" src="/icons/eth.svg" alt="" />
-                <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
+                <Image width={80} height={80} className="size-10 lg:size-20" src="/icons/eth.svg" alt="" />
+                <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
                   ETH
                 </span>
               </DropdownMenuLabel>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <span className="font-bold font-gravesend text-5xl tracking-[-2%] select-none text-white">
+          <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white">
             0.00
           </span>
         </div>
       </div>
       <Link href='/swap' className={cn(buttonVariants({ variant: 'outline' }), "bg-transparent rounded-full h-16 w-2/3 mt-2")}>
-        <span className="text-2xl font-gravesend font-bold">SWAP</span>
+        <span className="text-xl lg:text-2xl font-gravesend font-bold">SWAP</span>
       </Link>
     </div>
   );

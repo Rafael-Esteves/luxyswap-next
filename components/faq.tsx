@@ -7,7 +7,7 @@ import {
 
 export function Faq() {
   return (
-    <Accordion type="single" collapsible className="w-full font-gravesend font-medium">
+    <Accordion type="single" collapsible className="w-full font-gravesend font-medium text-xs tracking-tighter lg:text-2xl">
       <AccordionItem value="item-1">
         <AccordionTrigger>Como faço um swap de criptomoedas?</AccordionTrigger>
         <AccordionContent>
