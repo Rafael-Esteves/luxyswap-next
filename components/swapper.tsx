@@ -24,7 +24,7 @@ export function Swapper() {
               </span>
               <ChevronDown className="size-4 lg:size-8 mt-2" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:rounded-[50px]">
+            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:px-12 px-5 rounded-3xl lg:rounded-[50px]">
               <DropdownMenuLabel className="flex items-center cursor-pointer justify-center gap-2">
                 <Image width={80} height={80} className="size-10 lg:size-20" src="/icons/btc.svg" alt="" />
                 <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
@@ -50,7 +50,7 @@ export function Swapper() {
                 </span>
               <ChevronDown className="size-4 lg:size-8 mt-2" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:rounded-[50px]">
+            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:px-12 px-5 rounded-3xl lg:rounded-[50px]">
               <DropdownMenuLabel className="flex items-center cursor-pointer justify-center gap-2">
                 <Image width={80} height={80} className="size-10 lg:size-20" src="/icons/eth.svg" alt="" />
                 <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent">
