@@ -33,8 +33,8 @@ export default function Page() {
     <div className="w-full bg-swap-gradient bg-cover bg-no-repeat">
       <div className="w-full bg-swap relative bg-cover bg-no-repeat min-h-screen">
         <AnimatedContainer className="w-full flex items-center justify-center flex-col p-2">
-          <div className="w-full flex  flex-col py-3 lg:py-4 px-5 lg:px-10 rounded-[30px] lg:rounded-[70px] bg-[#D9D9D91A]">
-            <div className="w-full flex items-center justify-between mb-20">
+          <div className="w-full flex  flex-col py-3 lg:py-4 px-2 md:px-5 lg:px-10 rounded-[30px] lg:rounded-[70px] bg-[#D9D9D91A]">
+            <div className="w-full flex items-center justify-between flex-wrap gap-5 mb-20">
               <Image width={307} height={36} src="/icons/logo.svg" className="hidden lg:flex" alt="" />
               <Image width={140} height={16} src="/icons/logo.svg" className="flex lg:hidden" alt="" />
               <div className="flex items-center justify-center gap-4">
@@ -58,14 +58,14 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="px-5 w-full">
+            <div className="px-1 md:px-5 w-full">
               <div className="flex items-start lg:items-center flex-col lg:flex-row justify-between w-full mb-10 lg:mb-20">
                 <h1 className="font-gravesend mb-5 lg:mb-0 font-bold text-[40px] leading-10 lg:text-6xl tracking-tighter uppercase">
                   Luxy <br />
                   <span className="text-[#6F00FF]">dashboard</span>
                 </h1>
 
-                <div className="flex items-center justify-center gap-2 lg:gap-5">
+                <div className="flex items-center justify-center flex-wrap gap-2 lg:gap-5">
                   <div className="flex flex-col items-end justify-between p-2 lg:p-4 bg-[#627EEA] rounded-[20px] lg:rounded-[35px] w-[110px] h-[125px] lg:w-[300px] lg:h-[172px]">
                     <div className="flex items-center justify-between w-full">
                       <span className="font-scandia text-xs lg:text-xl tracking-tighter">
@@ -239,7 +239,7 @@ export default function Page() {
                       pares de moedas
                     </h1>
 
-                    <div className="flex items-center w-full justify-between gap-5">
+                    <div className="flex items-center w-full justify-between flex-wrap gap-5">
                       <div className="flex flex-col gap-2 lg:gap-4">
                         {pairCoins.map((item, index) => (
                           <IconRow
