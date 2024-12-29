@@ -28,7 +28,7 @@ export default function Home() {
                 Swaps rápidos,<br />
                 <span className="text-[#627EEA]">com privacidade</span>
               </h1>
-              <span className="hidden lg:flex font-scandia leading-8 text-xl">
+              <span className="hidden lg:block font-scandia leading-8 text-xl">
                 Seja soberano, faça swaps de criptomoedas com privacidade,{" "}
                 <b>segurança e transparência</b> em cada transação.
               </span>
