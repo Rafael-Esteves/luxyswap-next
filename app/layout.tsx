@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
