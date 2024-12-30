@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import "./globals.css";
 
 const gravesend = localFont({
@@ -90,7 +91,11 @@ export default function RootLayout({
       <body
         className={`${scandia.variable} ${gravesend.variable} antialiased`}
       >
+        <NextThemesProvider attribute='class'
+          defaultTheme='dark'
+          disableTransitionOnChange>
         {children}
+        </NextThemesProvider>
       </body>
     </html>
   );
