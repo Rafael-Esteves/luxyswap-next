@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowUpDown, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
@@ -21,7 +21,7 @@ export function Swapper() {
 
   const [openAddress, setOpenAddress] = useState(false);
   return (
-    <div className="select-none flex flex-col gap-2 items-center">
+    <div className="select-none flex flex-col gap-2 items-center relative">
       <div className="bg-[#D9D9D9]/15 flex flex-col items-start justify-start gap-4 py-5 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:rounded-[50px] max-w-72 lg:max-w-[509px]">
         <span className="font-scandia text-xs lg:text-xl">De</span>
         <div className="flex items-center justify-between">
@@ -62,6 +62,10 @@ export function Swapper() {
           />
         </div>
       </div>
+      <div className="p-5 rounded-full bg-black/10 backdrop-blur-md absolute top-[35%] z-10">
+        <ArrowUpDown className="text-white" />
+      </div>
+
       <div
         className="bg-purple-gradient flex flex-col items-start justify-start gap-4 rounded-3xl lg:rounded-[50px] max-w-72 lg:max-w-[509px] px-5 pb-5"
       >
