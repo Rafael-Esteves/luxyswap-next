@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ArrowUpDown, ChevronDown } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
