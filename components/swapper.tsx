@@ -62,7 +62,7 @@ export function Swapper() {
           />
         </div>
       </div>
-      <div className="p-5 rounded-full bg-black/10 backdrop-blur-md absolute top-[35%] z-10">
+      <div className="p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute top-[35%] z-10">
         <ArrowUpDown className="text-white" />
       </div>
 
@@ -125,13 +125,15 @@ export function Swapper() {
                 className="font-medium bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 font-scandia uppercase text-base tracking-tighter select-none text-white"
               />
 
-              <Image
-                src="/icons/arrow-btn-purple.svg"
-                className="cursor-pointer"
-                alt=""
-                width={87}
-                height={49}
-              />
+              <Link href='/swap'>
+                <Image
+                  src="/icons/arrow-btn-purple.svg"
+                  className="cursor-pointer"
+                  alt=""
+                  width={87}
+                  height={49}
+                />
+              </Link>
             </div>
             </motion.div>
         )}
