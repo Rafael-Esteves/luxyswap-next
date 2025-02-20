@@ -1,12 +1,22 @@
+'use client'
+
 import { Navbar } from "@/components/navbar";
 import { AnimatedContainer } from "@/components/ui/animated-container";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSwapStore } from "@/store/use-swap-store";
 import { ArrowLeftRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Page() {
+  const { fromCoin, toCoin, ethAddress } = useSwapStore();
+
+  // console.log("Swap Details:", {
+  //   fromCoin,
+  //   toCoin,
+  //   ethAddress,
+  // });
   return (
     <div className="w-full bg-swap-gradient bg-cover bg-no-repeat">
       <div className="w-full bg-swap relative bg-cover bg-no-repeat min-h-screen">
