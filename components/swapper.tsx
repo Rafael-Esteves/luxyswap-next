@@ -17,23 +17,25 @@ import { useDynamicFontSize } from "@/hooks/use-dynamic-font-size";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Input } from "./ui/input";
+import { useSwapStore } from "@/store/use-swap-store";
 
 export function Swapper() {
-  const [fromValue, setFromValue] = useState("0.00");
-  const [toValue, setToValue] = useState("0.00");
   const [openAddress, setOpenAddress] = useState(false);
   const [fromDropdownOpen, setFromDropdownOpen] = useState(false);
   const [toDropdownOpen, setToDropdownOpen] = useState(false);
   const [coins, setCoins] = useState<Coin[]>([]);
-  const [fromCoin, setFromCoin] = useState({
-    coin: "BTC",
-    icon: "",
-    isSvg: true,
-  });
-  const [toCoin, setToCoin] = useState({ coin: "ETH", icon: "", isSvg: true });
   const [coinIcons, setCoinIcons] = useState<{
     [key: string]: { content: string; isSvg: boolean };
   }>({});
+
+  const { 
+    fromCoin: { coin: fromCoinName, value: fromValue },
+    toCoin: { coin: toCoinName, value: toValue },
+    ethAddress,
+    setFromCoin,
+    setToCoin,
+    setEthAddress
+  } = useSwapStore();
 
   const fromFontSize = useDynamicFontSize(fromValue);
   const toFontSize = useDynamicFontSize(toValue);
@@ -101,19 +103,15 @@ export function Swapper() {
             onOpenChange={setFromDropdownOpen}
           >
             <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
-              {renderIcon(fromCoin.coin)}
+              {renderIcon(fromCoinName)}
               <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white">
-                {fromCoin.coin}
+                {fromCoinName}
               </span>
               <ChevronDown className="size-4 lg:size-8 mt-2" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:px-12 px-5 rounded-3xl max-w-72 lg:max-w-[590px] max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
               {renderCoinOptions((coin) => {
-                setFromCoin({
-                  coin,
-                  icon: coinIcons[coin].content,
-                  isSvg: coinIcons[coin].isSvg,
-                });
+                setFromCoin(coin, fromValue);
                 setFromDropdownOpen(false);
               })}
             </DropdownMenuContent>
@@ -121,7 +119,7 @@ export function Swapper() {
 
           <input
             value={fromValue}
-            onChange={(e) => setFromValue(e.target.value)}
+            onChange={(e) => setFromCoin(fromCoinName, e.target.value)}
             className={cn(
               "font-bold w-[30%] bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 font-gravesend tracking-tighter select-none text-white transition-all duration-200",
               `text-xl lg:text-${fromFontSize}`
@@ -129,7 +127,7 @@ export function Swapper() {
           />
         </div>
       </div>
-      <div className={cn("p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute z-10 top-[35%]")}>
+      <div className="p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute top-[40%] z-10">
         <ArrowUpDown className="text-white" />
       </div>
 
@@ -153,19 +151,15 @@ export function Swapper() {
               onOpenChange={setToDropdownOpen}
             >
               <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
-                {renderIcon(toCoin.coin)}
+                {renderIcon(toCoinName)}
                 <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white">
-                  {toCoin.coin}
+                  {toCoinName}
                 </span>
                 <ChevronDown className="size-4 lg:size-8 mt-2" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:px-12 px-5 rounded-3xl lg:rounded-[50px] max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
                 {renderCoinOptions((coin) => {
-                  setToCoin({
-                    coin,
-                    icon: coinIcons[coin].content,
-                    isSvg: coinIcons[coin].isSvg,
-                  });
+                  setToCoin(coin, toValue);
                   setToDropdownOpen(false);
                 })}
               </DropdownMenuContent>
@@ -173,7 +167,7 @@ export function Swapper() {
 
             <input
               value={toValue}
-              onChange={(e) => setToValue(e.target.value)}
+              onChange={(e) => setToCoin(toCoinName, e.target.value)}
               className={cn(
                 "font-bold w-[30%] bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 font-gravesend tracking-tighter select-none text-white transition-all duration-200",
                 `text-xl lg:text-${toFontSize}`
@@ -199,6 +193,8 @@ export function Swapper() {
               <div className="bg-[#D9D9D94D] rounded-full w-full p-2 flex items-center justify-between">
                 <Input
                   placeholder="YOUR ETH ADDRESS"
+                  value={ethAddress}
+                  onChange={(e) => setEthAddress(e.target.value)}
                   className="font-medium bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 font-scandia uppercase text-base tracking-tighter select-none text-white"
                 />
                 <Link href='/swap'>
