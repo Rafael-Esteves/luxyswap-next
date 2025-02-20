@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { Coin } from "@/types/Coin";
 import coinMetadata from '@/public/coin-icons/metadata.json';
 import { useDynamicFontSize } from "@/hooks/use-dynamic-font-size";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Input } from "./ui/input";
 
@@ -129,11 +129,17 @@ export function Swapper() {
           />
         </div>
       </div>
-      <div className="p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute top-[40%] z-10">
+      <div className={cn("p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute z-10 top-[35%]")}>
         <ArrowUpDown className="text-white" />
       </div>
 
-      <div className="bg-purple-gradient flex flex-col items-start justify-start gap-4 rounded-3xl lg:rounded-[50px] max-w-72 lg:max-w-[509px] px-5 pb-5">
+      <motion.div 
+        className="bg-purple-gradient flex flex-col items-start justify-start gap-4 rounded-3xl lg:rounded-[50px] max-w-72 lg:max-w-[509px] px-5 pb-5"
+        animate={{
+          height: openAddress ? "auto" : "initial",
+          transition: { duration: 0.5, ease: "easeInOut" }
+        }}
+      >
         <div
           className={cn(
             "py-5 lg:px-12 px-5 flex flex-col items-start gap-4",
@@ -175,55 +181,63 @@ export function Swapper() {
             />
           </div>
         </div>
-      </div>
-      {openAddress && (
-          <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: openAddress ? 1 : 0, y: openAddress ? 0 : 50 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="flex flex-col gap-2 items-end justify-end w-full"
-        >
-            <span className="font-medium text-sm font-gravesend mr-10">
-              TAXAS: 5%
-            </span>
-            <div className="bg-[#D9D9D94D] rounded-full w-full p-2 flex items-center justify-between">
-              <Input
-                placeholder="YOUR ETH ADRESS"
-                className="font-medium bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 font-scandia uppercase text-base tracking-tighter select-none text-white"
-              />
 
-              <Link href='/swap'>
-                <Image
-                  src="/icons/arrow-btn-purple.svg"
-                  className="cursor-pointer"
-                  alt=""
-                  width={87}
-                  height={49}
+        <AnimatePresence>
+          {openAddress && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="w-full space-y-4 pb-4"
+            >
+              <div className="flex justify-end px-4">
+                <span className="font-medium text-sm font-gravesend">
+                  TAXAS: 5%
+                </span>
+              </div>
+              <div className="bg-[#D9D9D94D] rounded-full w-full p-2 flex items-center justify-between">
+                <Input
+                  placeholder="YOUR ETH ADDRESS"
+                  className="font-medium bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 font-scandia uppercase text-base tracking-tighter select-none text-white"
                 />
-              </Link>
-            </div>
+                <Link href='/swap'>
+                  <Image
+                    src="/icons/arrow-btn-purple.svg"
+                    className="cursor-pointer"
+                    alt=""
+                    width={87}
+                    height={49}
+                  />
+                </Link>
+              </div>
             </motion.div>
-        )}
-      {!openAddress && (
-        <motion.div
-        initial={{ opacity: 1, y: 0 }}
-        animate={{ opacity: openAddress ? 0 : 1, y: openAddress ? 50 : 0 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="w-full"
-      >
-        <Button
-          onClick={() => setOpenAddress(true)}
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "bg-transparent rounded-full h-16 w-2/3 mt-2"
           )}
-        >
-          <span className="text-xl lg:text-2xl font-gravesend font-bold">
-            SWAP
-          </span>
-        </Button>
-        </motion.div>
-      )}
+        </AnimatePresence>
+      </motion.div>
+
+      <AnimatePresence>
+        {!openAddress && (
+          <motion.div
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="w-full flex justify-center"
+          >
+            <Button
+              onClick={() => setOpenAddress(true)}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "bg-transparent rounded-full h-16 w-2/3 mt-2"
+              )}
+            >
+              <span className="text-xl lg:text-2xl font-gravesend font-bold">
+                SWAP
+              </span>
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
