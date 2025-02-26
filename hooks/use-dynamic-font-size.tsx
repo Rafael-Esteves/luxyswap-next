@@ -8,11 +8,11 @@ export function useDynamicFontSize(value: string, maxLength: number = 10) {
   useEffect(() => {
     if (value.length <= maxLength) {
       setFontSize('5xl'); // Default large size
-    } else if (value.length <= maxLength + 5) {
+    } else if (value.length <= maxLength * 2) {
       setFontSize('4xl');
-    } else if (value.length <= maxLength + 10) {
+    } else if (value.length <= maxLength * 3) {
       setFontSize('3xl');
-    } else if (value.length <= maxLength + 15) {
+    } else if (value.length <= maxLength * 4) {
       setFontSize('2xl');
     } else {
       setFontSize('xl');

@@ -19,6 +19,19 @@ import Image from "next/image";
 import { Input } from "./ui/input";
 import { useSwapStore } from "@/store/use-swap-store";
 
+const formatNumericInput = (value: string) => {
+  // Remove all characters except numbers and dots
+  let formatted = value.replace(/[^\d.]/g, '');
+  
+  // Ensure only one decimal point
+  const parts = formatted.split('.');
+  if (parts.length > 2) {
+    formatted = parts[0] + '.' + parts.slice(1).join('');
+  }
+  
+  return formatted;
+};
+
 export function Swapper() {
   const [openAddress, setOpenAddress] = useState(false);
   const [fromDropdownOpen, setFromDropdownOpen] = useState(false);
@@ -39,8 +52,8 @@ export function Swapper() {
     setEthAddress,
   } = useSwapStore();
 
-  const fromFontSize = useDynamicFontSize(fromValue);
-  const toFontSize = useDynamicFontSize(toValue);
+  const fromFontSize = useDynamicFontSize(fromValue, 4);
+  const toFontSize = useDynamicFontSize(toValue, 4);
 
   useEffect(() => {
     const fetchCoins = async () => {
@@ -102,6 +115,40 @@ export function Swapper() {
     ));
   };
 
+  const handleFromFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (fromValue === "0.00") {
+      setFromCoin(fromCoinName, "");
+    }
+  };
+
+  const handleToFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (toValue === "0.00") {
+      setToCoin(toCoinName, "");
+    }
+  };
+
+  const handleFromBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (fromValue === "") {
+      setFromCoin(fromCoinName, "0.00");
+    }
+  };
+
+  const handleToBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (toValue === "") {
+      setToCoin(toCoinName, "0.00");
+    }
+  };
+
+  const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatNumericInput(e.target.value);
+    setFromCoin(fromCoinName, formatted);
+  };
+
+  const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatNumericInput(e.target.value);
+    setToCoin(toCoinName, formatted);
+  };
+
   return (
     <div className="select-none flex flex-col gap-2 items-center relative">
       <div>
@@ -138,7 +185,9 @@ export function Swapper() {
             </DropdownMenu>
             <input
               value={fromValue}
-              onChange={(e) => setFromCoin(fromCoinName, e.target.value)}
+              onChange={handleFromChange}
+              onFocus={handleFromFocus}
+              onBlur={handleFromBlur}
               className={cn(
                 "font-bold w-[30%] bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 font-gravesend tracking-tighter select-none text-white transition-all duration-200",
                 `text-xl lg:text-${fromFontSize}`
@@ -199,7 +248,9 @@ export function Swapper() {
 
             <input
               value={toValue}
-              onChange={(e) => setToCoin(toCoinName, e.target.value)}
+              onChange={handleToChange}
+              onFocus={handleToFocus}
+              onBlur={handleToBlur}
               className={cn(
                 "font-bold w-[30%] bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 font-gravesend tracking-tighter select-none text-white transition-all duration-200",
                 `text-xl lg:text-${toFontSize}`
