@@ -12,7 +12,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { Coin } from "@/types/Coin";
-import coinMetadata from '@/public/coin-icons/metadata.json';
+import coinMetadata from "@/public/coin-icons/metadata.json";
 import { useDynamicFontSize } from "@/hooks/use-dynamic-font-size";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -27,14 +27,16 @@ export function Swapper() {
   const [coinIcons, setCoinIcons] = useState<{
     [key: string]: { content: string; isSvg: boolean };
   }>({});
+  const [toSearchTerm, setToSearchTerm] = useState("");
+  const [fromSearchTerm, setFromSearchTerm] = useState("");
 
-  const { 
+  const {
     fromCoin: { coin: fromCoinName, value: fromValue },
     toCoin: { coin: toCoinName, value: toValue },
     ethAddress,
     setFromCoin,
     setToCoin,
-    setEthAddress
+    setEthAddress,
   } = useSwapStore();
 
   const fromFontSize = useDynamicFontSize(fromValue);
@@ -58,8 +60,8 @@ export function Swapper() {
       const icons: typeof coinIcons = {};
       for (const [coin, meta] of Object.entries(coinMetadata)) {
         icons[coin] = {
-          content: `/coin-icons/${(meta as {fileName: string}).fileName}`,
-          isSvg: (meta as {isSvg: boolean}).isSvg
+          content: `/coin-icons/${(meta as { fileName: string }).fileName}`,
+          isSvg: (meta as { isSvg: boolean }).isSvg,
         };
       }
       setCoinIcons(icons);
@@ -73,20 +75,27 @@ export function Swapper() {
       <img
         src={`/coin-icons/${coin.toLowerCase()}.svg`}
         alt={`${coin} icon`}
-        className="size-10 lg:size-20"
+        className="size-6 lg:size-10"
       />
     );
   };
 
-  const renderCoinOptions = (onSelect: (coin: string) => void) => {
-    return coins.map((coin, index) => (
+  const renderCoinOptions = (
+    onSelect: (coin: string) => void,
+    searchTerm: string = ""
+  ) => {
+    const filteredCoins = coins.filter((coin) =>
+      coin.coin.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    return filteredCoins.map((coin, index) => (
       <DropdownMenuLabel
         key={`${coin.coin}-${index}`}
         onClick={() => onSelect(coin.coin)}
-        className="flex items-center cursor-pointer justify-center gap-2 hover:bg-white/10"
+        className="flex items-center cursor-pointer justify-center gap-2 hover:bg-white/10 py-2"
       >
         {renderIcon(coin.coin)}
-        <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white">
+        <span className="font-bold font-gravesend text-lg lg:text-3xl tracking-tighter select-none text-white">
           {coin.coin}
         </span>
       </DropdownMenuLabel>
@@ -95,47 +104,60 @@ export function Swapper() {
 
   return (
     <div className="select-none flex flex-col gap-2 items-center relative">
-      <div className="bg-[#D9D9D9]/15 flex flex-col items-start justify-start gap-4 py-5 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:rounded-[50px] max-w-72 lg:max-w-[509px]">
-        <span className="font-scandia text-xs lg:text-xl">De</span>
-        <div className="flex items-center justify-between">
-          <DropdownMenu
-            open={fromDropdownOpen}
-            onOpenChange={setFromDropdownOpen}
-          >
-            <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
-              {renderIcon(fromCoinName)}
-              <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white">
-                {fromCoinName}
-              </span>
-              <ChevronDown className="size-4 lg:size-8 mt-2" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:px-12 px-5 rounded-3xl max-w-72 lg:max-w-[590px] max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
-              {renderCoinOptions((coin) => {
-                setFromCoin(coin, fromValue);
-                setFromDropdownOpen(false);
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <input
-            value={fromValue}
-            onChange={(e) => setFromCoin(fromCoinName, e.target.value)}
-            className={cn(
-              "font-bold w-[30%] bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 font-gravesend tracking-tighter select-none text-white transition-all duration-200",
-              `text-xl lg:text-${fromFontSize}`
-            )}
-          />
+      <div>
+        <div className="bg-[#D9D9D9]/15 flex flex-col items-start justify-start gap-4 py-5 lg:pb-20 lg:px-12 px-5 rounded-3xl lg:rounded-[50px] max-w-72 lg:max-w-[509px]">
+          <span className="font-scandia text-xs lg:text-xl">De</span>
+          <div className="flex items-center justify-between">
+            <DropdownMenu
+              open={fromDropdownOpen}
+              onOpenChange={setFromDropdownOpen}
+            >
+              <DropdownMenuTrigger className="border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex items-center justify-center gap-2">
+                {renderIcon(fromCoinName)}
+                <span className="font-bold font-gravesend text-xl lg:text-5xl tracking-tighter select-none text-white">
+                  {fromCoinName}
+                </span>
+                <ChevronDown className="size-4 lg:size-8 mt-2" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-[#000000]/80 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-2 lg:px-8 px-4 rounded-3xl max-w-80 lg:max-w-[650px] max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+                <div className="sticky top-0 p-2 bg-[#000000]/95 z-10 w-full">
+                  <input
+                    type="text"
+                    placeholder="Search coins..."
+                    value={fromSearchTerm}
+                    onChange={(e) => setFromSearchTerm(e.target.value)}
+                    className="w-full bg-white/10 text-white placeholder:text-white/50 rounded-lg px-3 py-2 text-sm focus:outline-none"
+                  />
+                </div>
+                {renderCoinOptions((coin) => {
+                  setFromCoin(coin, fromValue);
+                  setFromDropdownOpen(false);
+                  setFromSearchTerm("");
+                }, fromSearchTerm)}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <input
+              value={fromValue}
+              onChange={(e) => setFromCoin(fromCoinName, e.target.value)}
+              className={cn(
+                "font-bold w-[30%] bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 font-gravesend tracking-tighter select-none text-white transition-all duration-200",
+                `text-xl lg:text-${fromFontSize}`
+              )}
+            />
+          </div>
+        </div>
+        <div className="justify-center flex items-center relative w-full">
+          <div className="p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute z-10">
+            <ArrowUpDown className="text-white h-auto w-auto" />
+          </div>
         </div>
       </div>
-      <div className="p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute top-[40%] z-10">
-        <ArrowUpDown className="text-white" />
-      </div>
 
-      <motion.div 
+      <motion.div
         className="bg-purple-gradient flex flex-col items-start justify-start gap-4 rounded-3xl lg:rounded-[50px] max-w-72 lg:max-w-[509px] px-5 pb-5"
         animate={{
           height: openAddress ? "auto" : "initial",
-          transition: { duration: 0.5, ease: "easeInOut" }
+          transition: { duration: 0.5, ease: "easeInOut" },
         }}
       >
         <div
@@ -157,11 +179,21 @@ export function Swapper() {
                 </span>
                 <ChevronDown className="size-4 lg:size-8 mt-2" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-[#D9D9D9]/20 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-4 lg:px-12 px-5 rounded-3xl lg:rounded-[50px] max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+              <DropdownMenuContent className="bg-[#000000]/80 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-2 lg:px-8 px-4 rounded-3xl lg:rounded-[50px] max-h-[400px] max-w-80 lg:max-w-[650px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+                <div className="sticky top-0 p-2 bg-[#000000]/95 z-10 w-full">
+                  <input
+                    type="text"
+                    placeholder="Search coins..."
+                    value={toSearchTerm}
+                    onChange={(e) => setToSearchTerm(e.target.value)}
+                    className="w-full bg-white/10 text-white placeholder:text-white/50 rounded-lg px-3 py-2 text-sm focus:outline-none"
+                  />
+                </div>
                 {renderCoinOptions((coin) => {
                   setToCoin(coin, toValue);
                   setToDropdownOpen(false);
-                })}
+                  setToSearchTerm("");
+                }, toSearchTerm)}
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -192,12 +224,12 @@ export function Swapper() {
               </div>
               <div className="bg-[#D9D9D94D] rounded-full w-full p-2 flex items-center justify-between">
                 <Input
-                  placeholder="YOUR ETH ADDRESS"
+                  placeholder={`YOUR ${toCoinName} ADDRESS`}
                   value={ethAddress}
                   onChange={(e) => setEthAddress(e.target.value)}
                   className="font-medium bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 font-scandia uppercase text-base tracking-tighter select-none text-white"
                 />
-                <Link href='/swap'>
+                <Link href="/swap">
                   <Image
                     src="/icons/arrow-btn-purple.svg"
                     className="cursor-pointer"
