@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Input } from "./ui/input";
 import { useSwapStore } from "@/store/use-swap-store";
+import { usePairData } from "@/hooks/use-pair-data";
 
 const formatNumericInput = (value: string) => {
   // Remove all characters except numbers and dots
@@ -54,6 +55,7 @@ export function Swapper() {
 
   const fromFontSize = useDynamicFontSize(fromValue, 4);
   const toFontSize = useDynamicFontSize(toValue, 4);
+  const { pairData, isLoading } = usePairData(fromCoinName, toCoinName);
 
   useEffect(() => {
     const fetchCoins = async () => {
@@ -194,6 +196,12 @@ export function Swapper() {
               )}
             />
           </div>
+          {pairData && (
+            <div className="w-full text-xs text-white/70 px-2">
+              <span>Min: {pairData.min} {fromCoinName}</span>
+              <span className="float-right">Max: {pairData.max} {fromCoinName}</span>
+            </div>
+          )}
         </div>
         <div className="justify-center flex items-center relative w-full">
           <div className="p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute z-10">
