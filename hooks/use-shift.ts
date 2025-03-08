@@ -20,6 +20,7 @@ interface CreateShiftParams {
   settleNetwork: string;
   depositAmount: string;
   settleAddress: string;
+  refundAddress?: string;
 }
 
 /* 
@@ -116,6 +117,7 @@ export function useShift() {
     settleNetwork,
     depositAmount,
     settleAddress,
+    refundAddress,
   }: CreateShiftParams) => {
     if (
       !depositCoin ||
@@ -133,6 +135,14 @@ export function useShift() {
     setShiftError(null);
 
     try {
+      // Use the quote ID if we have a valid quote for these parameters
+      const useQuoteId =
+        quote &&
+        quote.depositCoin === depositCoin &&
+        quote.settleCoin === settleCoin &&
+        quote.depositNetwork === depositNetwork &&
+        quote.settleNetwork === settleNetwork;
+
       const response = await fetch("/api/sideshift/createShift", {
         method: "POST",
         headers: {
@@ -145,6 +155,8 @@ export function useShift() {
           settleNetwork,
           amount: depositAmount,
           settleAddress,
+          refundAddress,
+          quoteId: useQuoteId ? quote.id : undefined,
         }),
       });
 

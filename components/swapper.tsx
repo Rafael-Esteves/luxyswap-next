@@ -42,6 +42,23 @@ const formatNumericInput = (value: string) => {
   return formatted;
 };
 
+// Create a helper function to format currency amounts
+const formatCurrencyValue = (value: string | number) => {
+  const num = Number(value);
+  if (isNaN(num)) return value;
+
+  // For very small numbers, show more decimal places
+  if (num < 0.000001) return num.toExponential(8);
+  // For small numbers (less than 0.001), show 6 decimal places
+  if (num < 0.001) return num.toFixed(6);
+  // For medium numbers (less than 1), show 4 decimal places
+  if (num < 1) return num.toFixed(4);
+  // For larger numbers, show 2 decimal places
+  if (num < 100) return num.toFixed(2);
+  // For larger numbers, show 2 decimal places
+  return num.toFixed(0);
+};
+
 export function Swapper() {
   const router = useRouter();
   const [openAddress, setOpenAddress] = useState(false);
@@ -54,6 +71,10 @@ export function Swapper() {
   const [toSearchTerm, setToSearchTerm] = useState("");
   const [fromSearchTerm, setFromSearchTerm] = useState("");
   const [updateDirection, setUpdateDirection] = useState<'from' | 'to'>('from');
+  
+  // Add refs for search inputs
+  const fromSearchInputRef = useRef<HTMLInputElement>(null);
+  const toSearchInputRef = useRef<HTMLInputElement>(null);
 
   const {
     fromCoin: { coin: fromCoinName, value: fromValue },
@@ -67,13 +88,20 @@ export function Swapper() {
   const fromFontSize = useDynamicFontSize(fromValue, 4);
   const toFontSize = useDynamicFontSize(toValue, 4);
   
+  // Force font size update when values change programmatically
+  useEffect(() => {
+    // This empty dependency effect ensures font size updates
+    // whenever fromValue or toValue changes from any source
+  }, [fromValue, toValue]);
+  
   // Use our enhanced hooks
   const { 
     pairData, 
     isLoading: isPairLoading, 
     error: pairError,
     calculateSettleAmount,
-    calculateDepositAmount
+    calculateDepositAmount,
+    unsupportedPair,
   } = usePairData(fromCoinName, toCoinName);
   
   const {
@@ -170,12 +198,9 @@ export function Swapper() {
       (updateDirection === 'to' && !isNaN(numToValue) && numToValue > 0);
     
     if (!shouldGetQuote) return;
-    
-    console.log(`Preparing to get quote: direction=${updateDirection}, fromValue=${fromValue}, toValue=${toValue}`);
-    
+        
     // Setup debounce timer
     const timer = setTimeout(() => {
-      console.log(`Fetching quote after debounce: direction=${updateDirection}, fromValue=${fromValue}, toValue=${toValue}`);
       
       if (updateDirection === 'from') {
         // Only request if within limits
@@ -199,7 +224,7 @@ export function Swapper() {
           settleNetwork: pairData?.settleNetwork || ""
         });
       }
-    }, 2000);
+    }, 5000);
     
     return () => clearTimeout(timer);
   }, [fromCoinName, toCoinName, fromValue, toValue, updateDirection, pairData, getQuote]);
@@ -361,11 +386,39 @@ export function Swapper() {
   };
 
   const SwapErrorDisplay = () => {
-    if (pairError) return <p className="text-red-500 text-xs mt-1">{pairError}</p>;
+    if (pairError) {
+      if (unsupportedPair) {
+        return (
+          <p className="text-amber-400 text-xs mt-1">
+            This pair ({fromCoinName}-{toCoinName}) is not supported. Please try a different combination.
+          </p>
+        );
+      }
+      return <p className="text-red-500 text-xs mt-1">{pairError}</p>;
+    }
     if (quoteError) return <p className="text-red-500 text-xs mt-1">{quoteError}</p>;
     if (shiftError) return <p className="text-red-500 text-xs mt-1">{shiftError}</p>;
     return null;
   };
+
+  // Focus search input when dropdown opens - improved implementation
+  useEffect(() => {
+    if (fromDropdownOpen) {
+      // Using setTimeout to ensure DOM is fully updated
+      setTimeout(() => {
+        fromSearchInputRef.current?.focus();
+      }, 100);
+    }
+  }, [fromDropdownOpen]);
+  
+  useEffect(() => {
+    if (toDropdownOpen) {
+      // Using setTimeout to ensure DOM is fully updated
+      setTimeout(() => {
+        toSearchInputRef.current?.focus();
+      }, 100);
+    }
+  }, [toDropdownOpen]);
 
   return (
     <div className="select-none flex flex-col gap-2 items-center relative">
@@ -391,6 +444,7 @@ export function Swapper() {
                     placeholder="Search coins..."
                     value={fromSearchTerm}
                     onChange={(e) => setFromSearchTerm(e.target.value)}
+                    ref={fromSearchInputRef}
                     className="w-full bg-white/10 text-white placeholder:text-white/50 rounded-lg px-3 py-2 text-sm focus:outline-none"
                   />
                 </div>
@@ -413,9 +467,16 @@ export function Swapper() {
             />
           </div>
           {pairData && (
-            <div className="w-full text-xs text-white/70 px-2 flex justify-between">
-              <span>Min: {pairData.min} {fromCoinName}</span>
-              <span>Max: {pairData.max} {fromCoinName}</span>
+            <div className="w-full text-xs text-white/70 px-2 flex flex-col gap-1">
+              <div className="flex justify-between">
+                <span>Min: {formatCurrencyValue(pairData.min)} {fromCoinName}</span>
+                <span>Max: {formatCurrencyValue(pairData.max)} {fromCoinName}</span>
+              </div>
+              {pairData.depositNetwork && pairData.settleNetwork && (
+                <div className="flex justify-center text-xs italic">
+                  <span>Network: {pairData.depositNetwork}</span>
+                </div>
+              )}
             </div>
           )}
           {isPairLoading && <div className="text-xs text-white/70 animate-pulse">Loading pair data...</div>}
@@ -461,6 +522,7 @@ export function Swapper() {
                     placeholder="Search coins..."
                     value={toSearchTerm}
                     onChange={(e) => setToSearchTerm(e.target.value)}
+                    ref={toSearchInputRef}
                     className="w-full bg-white/10 text-white placeholder:text-white/50 rounded-lg px-3 py-2 text-sm focus:outline-none"
                   />
                 </div>
@@ -483,6 +545,11 @@ export function Swapper() {
               )}
             />
           </div>
+          {pairData && pairData.settleNetwork && (
+            <div className="w-full text-xs text-white/70 px-2">
+              <span className="italic">Network: {pairData.settleNetwork}</span>
+            </div>
+          )}
         </div>
 
         <AnimatePresence>
