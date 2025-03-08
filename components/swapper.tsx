@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpDown, ChevronDown } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Info } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
 import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Coin } from "@/types/Coin";
 import coinMetadata from "@/public/coin-icons/metadata.json";
 import { useDynamicFontSize } from "@/hooks/use-dynamic-font-size";
@@ -19,6 +19,15 @@ import Image from "next/image";
 import { Input } from "./ui/input";
 import { useSwapStore } from "@/store/use-swap-store";
 import { usePairData } from "@/hooks/use-pair-data";
+import { useShift } from "@/hooks/use-shift";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 const formatNumericInput = (value: string) => {
   // Remove all characters except numbers and dots
@@ -34,6 +43,7 @@ const formatNumericInput = (value: string) => {
 };
 
 export function Swapper() {
+  const router = useRouter();
   const [openAddress, setOpenAddress] = useState(false);
   const [fromDropdownOpen, setFromDropdownOpen] = useState(false);
   const [toDropdownOpen, setToDropdownOpen] = useState(false);
@@ -43,6 +53,7 @@ export function Swapper() {
   }>({});
   const [toSearchTerm, setToSearchTerm] = useState("");
   const [fromSearchTerm, setFromSearchTerm] = useState("");
+  const [updateDirection, setUpdateDirection] = useState<'from' | 'to'>('from');
 
   const {
     fromCoin: { coin: fromCoinName, value: fromValue },
@@ -55,8 +66,28 @@ export function Swapper() {
 
   const fromFontSize = useDynamicFontSize(fromValue, 4);
   const toFontSize = useDynamicFontSize(toValue, 4);
-  const { pairData, isLoading } = usePairData(fromCoinName, toCoinName);
+  
+  // Use our enhanced hooks
+  const { 
+    pairData, 
+    isLoading: isPairLoading, 
+    error: pairError,
+    calculateSettleAmount,
+    calculateDepositAmount
+  } = usePairData(fromCoinName, toCoinName);
+  
+  const {
+    quote,
+    isQuoteLoading,
+    quoteError,
+    shift,
+    isShiftLoading,
+    shiftError,
+    getQuote,
+    createShift
+  } = useShift();
 
+  // Fetch coins on initial load
   useEffect(() => {
     const fetchCoins = async () => {
       await fetch("/api/sideshift/coins")
@@ -70,6 +101,7 @@ export function Swapper() {
     fetchCoins();
   }, []);
 
+  // Load coin icons
   useEffect(() => {
     const loadIcons = async () => {
       const icons: typeof coinIcons = {};
@@ -84,6 +116,126 @@ export function Swapper() {
 
     loadIcons();
   }, []);
+
+  // First effect: Calculate values based on pair data and user input
+  useEffect(() => {
+    // Skip if we don't have pair data or no direction is set
+    if (!pairData || !updateDirection) return;
+    
+    // Skip during active quote loading to prevent loops
+    if (isQuoteLoading) return;
+    
+    // Skip empty values or default values
+    if (updateDirection === 'from') {
+      // Only calculate to value when from value changes and is valid
+      if (fromValue && fromValue !== "0.00") {
+        const numFromValue = Number(fromValue);
+        if (!isNaN(numFromValue) && numFromValue > 0) {
+          const calculatedToValue = calculateSettleAmount(fromValue);
+          // Only update if different to avoid loops
+          if (toValue !== calculatedToValue) {
+            setToCoin(toCoinName, calculatedToValue);
+          }
+        }
+      }
+    } else if (updateDirection === 'to') {
+      // Only calculate from value when to value changes and is valid
+      if (toValue && toValue !== "0.00") {
+        const numToValue = Number(toValue);
+        if (!isNaN(numToValue) && numToValue > 0) {
+          const calculatedFromValue = calculateDepositAmount(toValue);
+          // Only update if different to avoid loops
+          if (fromValue !== calculatedFromValue) {
+            setFromCoin(fromCoinName, calculatedFromValue);
+          }
+        }
+      }
+    }
+  }, [pairData, updateDirection, fromCoinName, toCoinName, fromValue, toValue, calculateSettleAmount, calculateDepositAmount, setFromCoin, setToCoin, toValue, isQuoteLoading]);
+
+  // Second effect: Handle quote fetching with debounce
+  useEffect(() => {
+    
+    // Skip if necessary data is missing
+    if (!pairData) return;
+    if (!updateDirection) return;
+    
+    // Only proceed with valid values
+    const numFromValue = Number(fromValue);
+    const numToValue = Number(toValue);
+    
+    // Determine if we should get a quote based on the update direction
+    const shouldGetQuote = 
+      (updateDirection === 'from' && !isNaN(numFromValue) && numFromValue > 0) ||
+      (updateDirection === 'to' && !isNaN(numToValue) && numToValue > 0);
+    
+    if (!shouldGetQuote) return;
+    
+    console.log(`Preparing to get quote: direction=${updateDirection}, fromValue=${fromValue}, toValue=${toValue}`);
+    
+    // Setup debounce timer
+    const timer = setTimeout(() => {
+      console.log(`Fetching quote after debounce: direction=${updateDirection}, fromValue=${fromValue}, toValue=${toValue}`);
+      
+      if (updateDirection === 'from') {
+        // Only request if within limits
+        if (numFromValue >= Number(pairData.min) && numFromValue <= Number(pairData.max)) {
+          getQuote({
+            depositCoin: fromCoinName,
+            settleCoin: toCoinName,
+            depositAmount: fromValue,
+            settleAmount: "",
+            depositNetwork: pairData?.depositNetwork || "",
+            settleNetwork: pairData?.settleNetwork || ""
+          });
+        }
+      } else if (updateDirection === 'to') {
+        getQuote({
+          depositCoin: fromCoinName,
+          settleCoin: toCoinName,
+          depositAmount: "",
+          settleAmount: toValue,
+          depositNetwork: pairData?.depositNetwork || "",
+          settleNetwork: pairData?.settleNetwork || ""
+        });
+      }
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, [fromCoinName, toCoinName, fromValue, toValue, updateDirection, pairData, getQuote]);
+
+  // Use separate functions with refs to track last input
+  const lastFromValueRef = React.useRef(fromValue);
+  const lastToValueRef = React.useRef(toValue);
+  
+  // Handle input changes with manual update direction tracking
+  const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatNumericInput(e.target.value);
+    // Only update if the value actually changed
+    if (formatted !== lastFromValueRef.current) {
+      lastFromValueRef.current = formatted;
+      setFromCoin(fromCoinName, formatted);
+      setUpdateDirection('from');
+    }
+  };
+
+  const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatNumericInput(e.target.value);
+    // Only update if the value actually changed
+    if (formatted !== lastToValueRef.current) {
+      lastToValueRef.current = formatted;
+      setToCoin(toCoinName, formatted);
+      setUpdateDirection('to');
+    }
+  };
+
+  // Handle shift creation response
+  useEffect(() => {
+    if (shift && shift.id) {
+      // Redirect to the swap confirmation page
+      router.push(`/swap?id=${shift.id}`);
+    }
+  }, [shift, router]);
 
   const renderIcon = (coin: string) => {
     return (
@@ -121,12 +273,14 @@ export function Swapper() {
     if (fromValue === "0.00") {
       setFromCoin(fromCoinName, "");
     }
+    setUpdateDirection('from');
   };
 
   const handleToFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (toValue === "0.00") {
       setToCoin(toCoinName, "");
     }
+    setUpdateDirection('to');
   };
 
   const handleFromBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -141,14 +295,76 @@ export function Swapper() {
     }
   };
 
-  const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatNumericInput(e.target.value);
-    setFromCoin(fromCoinName, formatted);
+  const handleSwapClick = () => {
+    // First check if we have a valid input amount
+    if (fromValue === "0.00" || fromValue === "") {
+      // Could add error state/message here about invalid amount
+      return;
+    }
+
+    // Check if pair data is still loading
+    if (isPairLoading) {
+      // Could add error state/message about waiting for pair data
+      return;
+    }
+
+    // Ensure we have valid pair data before proceeding
+    if (!pairData) {
+      // Could add error state/message about invalid trading pair
+      return;
+    }
+    
+    // Safely check min/max range
+    const numFromValue = Number(fromValue);
+    const minValue = Number(pairData.min);
+    const maxValue = Number(pairData.max);
+
+    if (isNaN(numFromValue) || isNaN(minValue) || isNaN(maxValue)) {
+      // Could add error state/message about invalid numbers
+      return;
+    }
+
+    if (numFromValue < minValue || numFromValue > maxValue) {
+      // Could add error state/message about amount being outside allowed range
+      return;
+    }
+    
+    // Get a fresh quote before showing the address field
+    getQuote({
+      depositCoin: fromCoinName, 
+      settleCoin: toCoinName, 
+      depositAmount: fromValue,
+      settleAmount: "",
+      depositNetwork: pairData.depositNetwork || "",
+      settleNetwork: pairData.settleNetwork || ""
+    });
+
+    // If all validations pass, show the address field
+    setOpenAddress(true);
   };
 
-  const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatNumericInput(e.target.value);
-    setToCoin(toCoinName, formatted);
+  const handleArrowClick = async () => {
+    if (!ethAddress || ethAddress.trim() === '') {
+      // Show error about missing address
+      return;
+    }
+    
+    // Create the shift with correctly named parameters
+    await createShift({
+      depositCoin: fromCoinName,
+      settleCoin: toCoinName,
+      depositAmount: fromValue,
+      settleAddress: ethAddress,
+      depositNetwork: pairData?.depositNetwork || "",
+      settleNetwork: pairData?.settleNetwork || ""
+    });
+  };
+
+  const SwapErrorDisplay = () => {
+    if (pairError) return <p className="text-red-500 text-xs mt-1">{pairError}</p>;
+    if (quoteError) return <p className="text-red-500 text-xs mt-1">{quoteError}</p>;
+    if (shiftError) return <p className="text-red-500 text-xs mt-1">{shiftError}</p>;
+    return null;
   };
 
   return (
@@ -197,11 +413,13 @@ export function Swapper() {
             />
           </div>
           {pairData && (
-            <div className="w-full text-xs text-white/70 px-2">
+            <div className="w-full text-xs text-white/70 px-2 flex justify-between">
               <span>Min: {pairData.min} {fromCoinName}</span>
-              <span className="float-right">Max: {pairData.max} {fromCoinName}</span>
+              <span>Max: {pairData.max} {fromCoinName}</span>
             </div>
           )}
+          {isPairLoading && <div className="text-xs text-white/70 animate-pulse">Loading pair data...</div>}
+          <SwapErrorDisplay />
         </div>
         <div className="justify-center flex items-center relative w-full">
           <div className="p-5 rounded-full bg-[#D9D9D9]/15 backdrop-blur-lg absolute z-10">
@@ -276,11 +494,44 @@ export function Swapper() {
               transition={{ duration: 0.5, ease: "easeInOut" }}
               className="w-full space-y-4 pb-4"
             >
-              <div className="flex justify-end px-4">
-                <span className="font-medium text-sm font-gravesend">
-                  TAXAS: 5%
+              <div className="flex justify-between px-4 text-sm font-gravesend">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center gap-1 cursor-help">
+                        <span>Rate:</span>
+                        <Info className="h-3 w-3" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Exchange rate between currencies</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <span>
+                  1 {fromCoinName} = {quote?.rate || pairData?.rate || "..."} {toCoinName}
                 </span>
               </div>
+              
+              <div className="flex justify-between px-4 text-sm font-gravesend">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center gap-1 cursor-help">
+                        <span>Network Fee:</span>
+                        <Info className="h-3 w-3" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Blockchain network transaction fee</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <span>
+                  {pairData?.depositNetworkFee || "Varies"} {fromCoinName}
+                </span>
+              </div>
+              
               <div className="bg-[#D9D9D94D] rounded-full w-full p-2 flex items-center justify-between">
                 <Input
                   placeholder={`YOUR ${toCoinName} ADDRESS`}
@@ -288,15 +539,23 @@ export function Swapper() {
                   onChange={(e) => setEthAddress(e.target.value)}
                   className="font-medium bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 font-scandia uppercase text-base tracking-tighter select-none text-white"
                 />
-                <Link href="/swap">
-                  <Image
-                    src="/icons/arrow-btn-purple.svg"
-                    className="cursor-pointer"
-                    alt=""
-                    width={87}
-                    height={49}
-                  />
-                </Link>
+                <Button
+                  onClick={handleArrowClick}
+                  disabled={isShiftLoading || !ethAddress || ethAddress.trim() === ''}
+                  className="bg-transparent border-none p-0 m-0"
+                >
+                  {isShiftLoading ? (
+                    <div className="animate-spin size-6 rounded-full border-2 border-white border-t-transparent" />
+                  ) : (
+                    <Image
+                      src="/icons/arrow-btn-purple.svg"
+                      className="cursor-pointer"
+                      alt="Create Shift"
+                      width={87}
+                      height={49}
+                    />
+                  )}
+                </Button>
               </div>
             </motion.div>
           )}
@@ -312,15 +571,20 @@ export function Swapper() {
             className="w-full flex justify-center"
           >
             <Button
-              onClick={() => setOpenAddress(true)}
+              onClick={handleSwapClick}
+              disabled={isQuoteLoading || isPairLoading || fromValue === "0.00"}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "bg-transparent rounded-full h-16 w-2/3 mt-2"
               )}
             >
-              <span className="text-xl lg:text-2xl font-gravesend font-bold">
-                SWAP
-              </span>
+              {isPairLoading || isQuoteLoading ? (
+                <div className="animate-spin size-6 rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                <span className="text-xl lg:text-2xl font-gravesend font-bold">
+                  SWAP
+                </span>
+              )}
             </Button>
           </motion.div>
         )}

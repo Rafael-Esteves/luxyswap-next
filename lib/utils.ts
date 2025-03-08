@@ -7,25 +7,67 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Add these new utilities
-export const storeTransaction = (transaction: any) => {
-  if (typeof window === "undefined") return;
-  const existing = JSON.parse(localStorage.getItem("transactions") || "[]");
-  localStorage.setItem(
-    "transactions",
-    JSON.stringify([...existing, transaction])
-  );
+interface Transaction {
+  depositCoin: string;
+  settleCoin: string;
+  depositAmount: string;
+  settleAmount: string;
+  depositNetwork: string;
+  settleNetwork: string;
+  date: string;
+  id: string;
+  status: string;
+}
+
+export const getTransactions = (): Transaction[] => {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const stored = localStorage.getItem("transactions");
+    if (!stored) return [];
+
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) return [];
+
+    // Validate each transaction object
+    const validTransactions = parsed.filter((tx): tx is Transaction => {
+      return (
+        typeof tx === "object" &&
+        tx !== null &&
+        typeof tx.depositCoin === "string" &&
+        typeof tx.settleCoin === "string" &&
+        typeof tx.depositAmount === "string" &&
+        typeof tx.settleAmount === "string" &&
+        typeof tx.depositNetwork === "string" &&
+        typeof tx.settleNetwork === "string" &&
+        typeof tx.date === "string" &&
+        typeof tx.id === "string" &&
+        typeof tx.status === "string"
+      );
+    });
+
+    return validTransactions;
+  } catch (error) {
+    console.error("Error parsing transactions:", error);
+    return [];
+  }
 };
 
-export const getTransactions = () => {
-  if (typeof window === "undefined") return [];
-  return JSON.parse(localStorage.getItem("transactions") || "[]");
+export const storeTransaction = (transaction: Transaction) => {
+  if (typeof window === "undefined") return;
+
+  const transactions = getTransactions();
+  transactions.push(transaction);
+  localStorage.setItem("transactions", JSON.stringify(transactions));
 };
 
 export const updateTransactionStatus = (id: string, status: string) => {
   if (typeof window === "undefined") return;
+
   const transactions = getTransactions();
-  const updated = transactions.map((t: any) =>
-    t.id === id ? { ...t, status } : t
+  const updatedTransactions = transactions.map((tx) =>
+    tx.id === id ? { ...tx, status } : tx
   );
-  localStorage.setItem("transactions", JSON.stringify(updated));
+
+  localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
 };
