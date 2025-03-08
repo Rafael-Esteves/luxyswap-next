@@ -1,0 +1,770 @@
+{
+  "1INCH": {
+    "fileName": "1inch.svg",
+    "isSvg": true
+  },
+  "AAVE": {
+    "fileName": "aave.svg",
+    "isSvg": true
+  },
+  "ACT": {
+    "fileName": "act.svg",
+    "isSvg": true
+  },
+  "ADA": {
+    "fileName": "ada.svg",
+    "isSvg": true
+  },
+  "AERO": {
+    "fileName": "aero.svg",
+    "isSvg": true
+  },
+  "AI16Z": {
+    "fileName": "ai16z.svg",
+    "isSvg": true
+  },
+  "AIXBT": {
+    "fileName": "aixbt.svg",
+    "isSvg": true
+  },
+  "ALGO": {
+    "fileName": "algo.svg",
+    "isSvg": true
+  },
+  "AMP": {
+    "fileName": "amp.svg",
+    "isSvg": true
+  },
+  "APE": {
+    "fileName": "ape.svg",
+    "isSvg": true
+  },
+  "APT": {
+    "fileName": "apt.svg",
+    "isSvg": true
+  },
+  "APU": {
+    "fileName": "apu.svg",
+    "isSvg": true
+  },
+  "ARB": {
+    "fileName": "arb.svg",
+    "isSvg": true
+  },
+  "ATLAS": {
+    "fileName": "atlas.svg",
+    "isSvg": true
+  },
+  "ATOM": {
+    "fileName": "atom.svg",
+    "isSvg": true
+  },
+  "AVAX": {
+    "fileName": "avax.svg",
+    "isSvg": true
+  },
+  "AXS": {
+    "fileName": "axs.svg",
+    "isSvg": true
+  },
+  "BAT": {
+    "fileName": "bat.svg",
+    "isSvg": true
+  },
+  "BCH": {
+    "fileName": "bch.svg",
+    "isSvg": true
+  },
+  "BERA": {
+    "fileName": "bera.svg",
+    "isSvg": true
+  },
+  "BIT": {
+    "fileName": "bit.svg",
+    "isSvg": true
+  },
+  "BLUR": {
+    "fileName": "blur.png",
+    "isSvg": false
+  },
+  "BLZE": {
+    "fileName": "blze.svg",
+    "isSvg": true
+  },
+  "BODEN": {
+    "fileName": "boden.svg",
+    "isSvg": true
+  },
+  "BOME": {
+    "fileName": "bome.svg",
+    "isSvg": true
+  },
+  "BONE": {
+    "fileName": "bone.svg",
+    "isSvg": true
+  },
+  "BONK": {
+    "fileName": "bonk.svg",
+    "isSvg": true
+  },
+  "BRETT": {
+    "fileName": "brett.svg",
+    "isSvg": true
+  },
+  "BNB": {
+    "fileName": "bnb.svg",
+    "isSvg": true
+  },
+  "BSOL": {
+    "fileName": "bsol.svg",
+    "isSvg": true
+  },
+  "BTC": {
+    "fileName": "btc.svg",
+    "isSvg": true
+  },
+  "BTC.b": {
+    "fileName": "btc.b.svg",
+    "isSvg": true
+  },
+  "cbBTC": {
+    "fileName": "cbbtc.svg",
+    "isSvg": true
+  },
+  "cbETH": {
+    "fileName": "cbeth.svg",
+    "isSvg": true
+  },
+  "CHILLGUY": {
+    "fileName": "chillguy.svg",
+    "isSvg": true
+  },
+  "CHZ": {
+    "fileName": "chz.svg",
+    "isSvg": true
+  },
+  "COMP": {
+    "fileName": "comp.svg",
+    "isSvg": true
+  },
+  "COQ": {
+    "fileName": "coq.svg",
+    "isSvg": true
+  },
+  "CRO": {
+    "fileName": "cro.svg",
+    "isSvg": true
+  },
+  "CROWN": {
+    "fileName": "crown.svg",
+    "isSvg": true
+  },
+  "CRV": {
+    "fileName": "crv.svg",
+    "isSvg": true
+  },
+  "DAI": {
+    "fileName": "dai.svg",
+    "isSvg": true
+  },
+  "DASH": {
+    "fileName": "dash.svg",
+    "isSvg": true
+  },
+  "DOGE": {
+    "fileName": "doge.svg",
+    "isSvg": true
+  },
+  "DOT": {
+    "fileName": "dot.svg",
+    "isSvg": true
+  },
+  "DRIFT": {
+    "fileName": "drift.svg",
+    "isSvg": true
+  },
+  "DYDX": {
+    "fileName": "dydx.svg",
+    "isSvg": true
+  },
+  "EIGEN": {
+    "fileName": "eigen.svg",
+    "isSvg": true
+  },
+  "ENS": {
+    "fileName": "ens.svg",
+    "isSvg": true
+  },
+  "ETH": {
+    "fileName": "eth.svg",
+    "isSvg": true
+  },
+  "ENA": {
+    "fileName": "ena.svg",
+    "isSvg": true
+  },
+  "EUROC": {
+    "fileName": "euroc.svg",
+    "isSvg": true
+  },
+  "FARTCOIN": {
+    "fileName": "fartcoin.svg",
+    "isSvg": true
+  },
+  "FDUSD": {
+    "fileName": "fdusd.svg",
+    "isSvg": true
+  },
+  "FET": {
+    "fileName": "fet.svg",
+    "isSvg": true
+  },
+  "FLOKI": {
+    "fileName": "floki.svg",
+    "isSvg": true
+  },
+  "FOX": {
+    "fileName": "fox.svg",
+    "isSvg": true
+  },
+  "FRAX": {
+    "fileName": "frax.svg",
+    "isSvg": true
+  },
+  "FWOG": {
+    "fileName": "fwog.svg",
+    "isSvg": true
+  },
+  "FXS": {
+    "fileName": "fxs.svg",
+    "isSvg": true
+  },
+  "GALA": {
+    "fileName": "gala.svg",
+    "isSvg": true
+  },
+  "GIGA": {
+    "fileName": "giga.svg",
+    "isSvg": true
+  },
+  "GMT": {
+    "fileName": "gmt.svg",
+    "isSvg": true
+  },
+  "GMX": {
+    "fileName": "gmx.svg",
+    "isSvg": true
+  },
+  "GNS": {
+    "fileName": "gns.svg",
+    "isSvg": true
+  },
+  "GOAT": {
+    "fileName": "goat.svg",
+    "isSvg": true
+  },
+  "GRASS": {
+    "fileName": "grass.svg",
+    "isSvg": true
+  },
+  "GRIFFAIN": {
+    "fileName": "griffain.svg",
+    "isSvg": true
+  },
+  "GRT": {
+    "fileName": "grt.svg",
+    "isSvg": true
+  },
+  "HBB": {
+    "fileName": "hbb.svg",
+    "isSvg": true
+  },
+  "HEX": {
+    "fileName": "hex.svg",
+    "isSvg": true
+  },
+  "HNT": {
+    "fileName": "hnt.svg",
+    "isSvg": true
+  },
+  "HONEY": {
+    "fileName": "honey.svg",
+    "isSvg": true
+  },
+  "ICP": {
+    "fileName": "icp.svg",
+    "isSvg": true
+  },
+  "ILV": {
+    "fileName": "ilv.svg",
+    "isSvg": true
+  },
+  "IMX": {
+    "fileName": "imx.svg",
+    "isSvg": true
+  },
+  "INJ": {
+    "fileName": "inj.svg",
+    "isSvg": true
+  },
+  "FLUID": {
+    "fileName": "fluid.svg",
+    "isSvg": true
+  },
+  "JASMY": {
+    "fileName": "jasmy.svg",
+    "isSvg": true
+  },
+  "JITOSOL": {
+    "fileName": "jitosol.svg",
+    "isSvg": true
+  },
+  "JOE": {
+    "fileName": "joe.png",
+    "isSvg": false
+  },
+  "JTO": {
+    "fileName": "jto.svg",
+    "isSvg": true
+  },
+  "JUP": {
+    "fileName": "jup.svg",
+    "isSvg": true
+  },
+  "KMNO": {
+    "fileName": "kmno.svg",
+    "isSvg": true
+  },
+  "LFNTY": {
+    "fileName": "lfnty.svg",
+    "isSvg": true
+  },
+  "LDO": {
+    "fileName": "ldo.svg",
+    "isSvg": true
+  },
+  "LINK": {
+    "fileName": "link.svg",
+    "isSvg": true
+  },
+  "LOOKS": {
+    "fileName": "looks.svg",
+    "isSvg": true
+  },
+  "LRC": {
+    "fileName": "lrc.svg",
+    "isSvg": true
+  },
+  "LST": {
+    "fileName": "lst.svg",
+    "isSvg": true
+  },
+  "LTC": {
+    "fileName": "ltc.svg",
+    "isSvg": true
+  },
+  "MAGIC": {
+    "fileName": "magic.svg",
+    "isSvg": true
+  },
+  "MANA": {
+    "fileName": "mana.svg",
+    "isSvg": true
+  },
+  "OM": {
+    "fileName": "om.svg",
+    "isSvg": true
+  },
+  "mETH": {
+    "fileName": "meth.svg",
+    "isSvg": true
+  },
+  "MEW": {
+    "fileName": "mew.svg",
+    "isSvg": true
+  },
+  "MIM": {
+    "fileName": "mim.svg",
+    "isSvg": true
+  },
+  "MKR": {
+    "fileName": "mkr.svg",
+    "isSvg": true
+  },
+  "MNDE": {
+    "fileName": "mnde.svg",
+    "isSvg": true
+  },
+  "MNGO": {
+    "fileName": "mngo.svg",
+    "isSvg": true
+  },
+  "MNT": {
+    "fileName": "mnt.svg",
+    "isSvg": true
+  },
+  "MOBILE": {
+    "fileName": "mobile.svg",
+    "isSvg": true
+  },
+  "MOG": {
+    "fileName": "mog.svg",
+    "isSvg": true
+  },
+  "MOODENG": {
+    "fileName": "moodeng.svg",
+    "isSvg": true
+  },
+  "MORPHO": {
+    "fileName": "morpho.svg",
+    "isSvg": true
+  },
+  "MSOL": {
+    "fileName": "msol.svg",
+    "isSvg": true
+  },
+  "MYRO": {
+    "fileName": "myro.svg",
+    "isSvg": true
+  },
+  "NEAR": {
+    "fileName": "near.svg",
+    "isSvg": true
+  },
+  "NEIRO": {
+    "fileName": "neiro.svg",
+    "isSvg": true
+  },
+  "NOS": {
+    "fileName": "nos.svg",
+    "isSvg": true
+  },
+  "ONDO": {
+    "fileName": "ondo.svg",
+    "isSvg": true
+  },
+  "OP": {
+    "fileName": "op.svg",
+    "isSvg": true
+  },
+  "ORCA": {
+    "fileName": "orca.svg",
+    "isSvg": true
+  },
+  "CAKE": {
+    "fileName": "cake.svg",
+    "isSvg": true
+  },
+  "PENDLE": {
+    "fileName": "pendle.svg",
+    "isSvg": true
+  },
+  "PENGU": {
+    "fileName": "pengu.svg",
+    "isSvg": true
+  },
+  "PEPE": {
+    "fileName": "pepe.svg",
+    "isSvg": true
+  },
+  "PNUT": {
+    "fileName": "pnut.svg",
+    "isSvg": true
+  },
+  "POL": {
+    "fileName": "pol.svg",
+    "isSvg": true
+  },
+  "POLIS": {
+    "fileName": "polis.svg",
+    "isSvg": true
+  },
+  "POPCAT": {
+    "fileName": "popcat.svg",
+    "isSvg": true
+  },
+  "PRIME": {
+    "fileName": "prime.svg",
+    "isSvg": true
+  },
+  "PYTH": {
+    "fileName": "pyth.svg",
+    "isSvg": true
+  },
+  "PYUSD": {
+    "fileName": "pyusd.svg",
+    "isSvg": true
+  },
+  "QNT": {
+    "fileName": "qnt.svg",
+    "isSvg": true
+  },
+  "RAI": {
+    "fileName": "rai.svg",
+    "isSvg": true
+  },
+  "RAY": {
+    "fileName": "ray.svg",
+    "isSvg": true
+  },
+  "RBTC": {
+    "fileName": "rbtc.svg",
+    "isSvg": true
+  },
+  "rETH": {
+    "fileName": "reth.svg",
+    "isSvg": true
+  },
+  "RLB": {
+    "fileName": "rlb.svg",
+    "isSvg": true
+  },
+  "RNDR": {
+    "fileName": "rndr.svg",
+    "isSvg": true
+  },
+  "RON": {
+    "fileName": "ron.svg",
+    "isSvg": true
+  },
+  "RPL": {
+    "fileName": "rpl.svg",
+    "isSvg": true
+  },
+  "SAI": {
+    "fileName": "sai.svg",
+    "isSvg": true
+  },
+  "SAND": {
+    "fileName": "sand.svg",
+    "isSvg": true
+  },
+  "SAVAX": {
+    "fileName": "savax.svg",
+    "isSvg": true
+  },
+  "SEI": {
+    "fileName": "sei.svg",
+    "isSvg": true
+  },
+  "SHDW": {
+    "fileName": "shdw.svg",
+    "isSvg": true
+  },
+  "SHIB": {
+    "fileName": "shib.svg",
+    "isSvg": true
+  },
+  "SLERF": {
+    "fileName": "slerf.svg",
+    "isSvg": true
+  },
+  "SLND": {
+    "fileName": "slnd.svg",
+    "isSvg": true
+  },
+  "SLP": {
+    "fileName": "slp.svg",
+    "isSvg": true
+  },
+  "SNX": {
+    "fileName": "snx.svg",
+    "isSvg": true
+  },
+  "SOL": {
+    "fileName": "sol.svg",
+    "isSvg": true
+  },
+  "S": {
+    "fileName": "s.svg",
+    "isSvg": true
+  },
+  "SOS": {
+    "fileName": "sos.svg",
+    "isSvg": true
+  },
+  "SPX": {
+    "fileName": "spx.svg",
+    "isSvg": true
+  },
+  "SRM": {
+    "fileName": "srm.svg",
+    "isSvg": true
+  },
+  "stETH": {
+    "fileName": "steth.svg",
+    "isSvg": true
+  },
+  "STX": {
+    "fileName": "stx.svg",
+    "isSvg": true
+  },
+  "SUI": {
+    "fileName": "sui.svg",
+    "isSvg": true
+  },
+  "SUSHI": {
+    "fileName": "sushi.svg",
+    "isSvg": true
+  },
+  "SWARMS": {
+    "fileName": "swarms.svg",
+    "isSvg": true
+  },
+  "SWEAT": {
+    "fileName": "sweat.svg",
+    "isSvg": true
+  },
+  "SYN": {
+    "fileName": "syn.svg",
+    "isSvg": true
+  },
+  "TAO": {
+    "fileName": "tao.svg",
+    "isSvg": true
+  },
+  "TBTC": {
+    "fileName": "tbtc.svg",
+    "isSvg": true
+  },
+  "TIA": {
+    "fileName": "tia.svg",
+    "isSvg": true
+  },
+  "TNSR": {
+    "fileName": "tnsr.svg",
+    "isSvg": true
+  },
+  "TON": {
+    "fileName": "ton.svg",
+    "isSvg": true
+  },
+  "TREMP": {
+    "fileName": "tremp.svg",
+    "isSvg": true
+  },
+  "TRUMP": {
+    "fileName": "trump.svg",
+    "isSvg": true
+  },
+  "TRX": {
+    "fileName": "trx.svg",
+    "isSvg": true
+  },
+  "TURBO": {
+    "fileName": "turbo.svg",
+    "isSvg": true
+  },
+  "TUSD": {
+    "fileName": "tusd.svg",
+    "isSvg": true
+  },
+  "UNI": {
+    "fileName": "uni.svg",
+    "isSvg": true
+  },
+  "USDbC": {
+    "fileName": "usdbc.svg",
+    "isSvg": true
+  },
+  "USDC": {
+    "fileName": "usdc.svg",
+    "isSvg": true
+  },
+  "USDE": {
+    "fileName": "usde.svg",
+    "isSvg": true
+  },
+  "USDP": {
+    "fileName": "usdp.svg",
+    "isSvg": true
+  },
+  "USDS": {
+    "fileName": "usds.svg",
+    "isSvg": true
+  },
+  "USDT": {
+    "fileName": "usdt.svg",
+    "isSvg": true
+  },
+  "USR": {
+    "fileName": "usr.svg",
+    "isSvg": true
+  },
+  "VERSE": {
+    "fileName": "verse.svg",
+    "isSvg": true
+  },
+  "VIRTUAL": {
+    "fileName": "virtual.svg",
+    "isSvg": true
+  },
+  "VVV": {
+    "fileName": "vvv.svg",
+    "isSvg": true
+  },
+  "WAVAX": {
+    "fileName": "wavax.svg",
+    "isSvg": true
+  },
+  "WBTC": {
+    "fileName": "wbtc.svg",
+    "isSvg": true
+  },
+  "WEN": {
+    "fileName": "wen.svg",
+    "isSvg": true
+  },
+  "WETH": {
+    "fileName": "weth.svg",
+    "isSvg": true
+  },
+  "WHALES": {
+    "fileName": "whales.svg",
+    "isSvg": true
+  },
+  "WIF": {
+    "fileName": "wif.png",
+    "isSvg": false
+  },
+  "WLD": {
+    "fileName": "wld.svg",
+    "isSvg": true
+  },
+  "WOO": {
+    "fileName": "woo.svg",
+    "isSvg": true
+  },
+  "W": {
+    "fileName": "w.svg",
+    "isSvg": true
+  },
+  "XAI": {
+    "fileName": "xai.svg",
+    "isSvg": true
+  },
+  "XAUT": {
+    "fileName": "xaut.svg",
+    "isSvg": true
+  },
+  "XEC": {
+    "fileName": "xec.svg",
+    "isSvg": true
+  },
+  "XLM": {
+    "fileName": "xlm.svg",
+    "isSvg": true
+  },
+  "XRP": {
+    "fileName": "xrp.svg",
+    "isSvg": true
+  },
+  "YFI": {
+    "fileName": "yfi.svg",
+    "isSvg": true
+  },
+  "ZRO": {
+    "fileName": "zro.svg",
+    "isSvg": true
+  }
+}

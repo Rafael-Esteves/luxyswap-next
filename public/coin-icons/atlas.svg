@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96px" height="96px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icon Reverse</title>
+    <defs>
+        <polygon id="path-1" points="8 15.5 0.5 0.5 15.5 0.5"></polygon>
+        <path d="M26,20.487 L12.588,49.322 C12.145,50.246 11.915,50.996 10.94,50.996 L2.081,51 C0.811,51 0.111,50.669 0.727,49.326 L22.39,2.112 C22.832,1.327 23.107,0.75 24.083,0.75 L27.918,0.75 C28.893,0.75 29.168,1.327 29.611,2.112 L51.272,49.326 C51.89,50.669 51.189,51 49.919,51 L41.06,50.996 C40.085,50.996 39.855,50.246 39.412,49.322 L26,20.487 L26,20.487 Z" id="path-3"></path>
+    </defs>
+    <g id="Icon-Reverse" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3" transform="translate(40.000000, 67.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Clip-2"></g>
+            <polygon id="Fill-1" fill="#32FEFF" mask="url(#mask-2)" points="-3.25 19.25 19.25 19.25 19.25 -3.25 -3.25 -3.25"></polygon>
+        </g>
+        <g id="Group-6" transform="translate(22.000000, 21.000000)">
+            <mask id="mask-4" fill="white">
+                <use xlink:href="#path-3"></use>
+            </mask>
+            <g id="Clip-5"></g>
+            <polygon id="Fill-4" fill="#17181D" mask="url(#mask-4)" points="-3.25 54.75 55.25 54.75 55.25 -3 -3.25 -3"></polygon>
+        </g>
+    </g>
+</svg>
