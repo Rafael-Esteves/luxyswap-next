@@ -330,22 +330,25 @@ export function Swapper() {
     }
   };
 
+  const [swapError, setSwapError] = useState<string>("");
+
   const handleSwapClick = () => {
     // First check if we have a valid input amount
     if (fromValue === "0.00" || fromValue === "") {
-      // Could add error state/message here about invalid amount
+      // Add error state/message here about invalid amount
+      setSwapError("Please enter a valid amount");
       return;
     }
 
     // Check if pair data is still loading
     if (isPairLoading) {
-      // Could add error state/message about waiting for pair data
+      setSwapError("Please wait while we load trading pair data");
       return;
     }
 
     // Ensure we have valid pair data before proceeding
     if (!pairData) {
-      // Could add error state/message about invalid trading pair
+      setSwapError("Invalid trading pair, please try a different combination");
       return;
     }
     
@@ -355,14 +358,22 @@ export function Swapper() {
     const maxValue = Number(pairData.max);
 
     if (isNaN(numFromValue) || isNaN(minValue) || isNaN(maxValue)) {
-      // Could add error state/message about invalid numbers
+      setSwapError("Invalid amount format");
       return;
     }
 
-    if (numFromValue < minValue || numFromValue > maxValue) {
-      // Could add error state/message about amount being outside allowed range
+    if (numFromValue < minValue) {
+      setSwapError(`Amount too small. Minimum is ${formatCurrencyValue(minValue)} ${fromCoinName}`);
       return;
     }
+    
+    if (numFromValue > maxValue) {
+      setSwapError(`Amount too large. Maximum is ${formatCurrencyValue(maxValue)} ${fromCoinName}`);
+      return;
+    }
+    
+    // Clear any previous errors
+    setSwapError("");
     
     // Get a fresh quote before showing the address field
     getQuote({
@@ -396,6 +407,7 @@ export function Swapper() {
   };
 
   const SwapErrorDisplay = () => {
+    if (swapError) return <p className="text-red-500 text-xs mt-1">{swapError}</p>;
     if (pairError) {
       if (unsupportedPair) {
         return (
@@ -489,7 +501,6 @@ export function Swapper() {
               )}
             </div>
           )}
-          {isPairLoading && <div className="text-xs text-white/70 animate-pulse">Loading pair data...</div>}
           <SwapErrorDisplay />
         </div>
         <div className="justify-center flex items-center relative w-full">
@@ -649,7 +660,7 @@ export function Swapper() {
           >
             <Button
               onClick={handleSwapClick}
-              disabled={isQuoteLoading || isPairLoading || fromValue === "0.00"}
+              disabled={isQuoteLoading || isPairLoading}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "bg-transparent rounded-full h-16 w-2/3 mt-2"
