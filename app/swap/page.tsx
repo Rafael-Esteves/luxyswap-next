@@ -11,6 +11,8 @@ import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
+// page
+
 interface ShiftData {
   id: string;
   depositAddress: string;
