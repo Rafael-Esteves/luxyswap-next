@@ -12,7 +12,6 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import { Coin } from "@/types/Coin";
-import coinMetadata from "@/public/coin-icons/metadata.json";
 import { useDynamicFontSize } from "@/hooks/use-dynamic-font-size";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -132,14 +131,25 @@ export function Swapper() {
   // Load coin icons
   useEffect(() => {
     const loadIcons = async () => {
-      const icons: typeof coinIcons = {};
-      for (const [coin, meta] of Object.entries(coinMetadata)) {
-        icons[coin] = {
-          content: `/coin-icons/${(meta as { fileName: string }).fileName}`,
-          isSvg: (meta as { isSvg: boolean }).isSvg,
-        };
+      try {
+        // Fetch metadata.json via URL
+        const response = await fetch('/coin-icons/metadata.json');
+        if (!response.ok) {
+          throw new Error('Failed to load coin metadata');
+        }
+        const metadata = await response.json();
+        
+        const icons: typeof coinIcons = {};
+        for (const [coin, meta] of Object.entries(metadata)) {
+          icons[coin] = {
+            content: `/coin-icons/${(meta as { fileName: string }).fileName}`,
+            isSvg: (meta as { isSvg: boolean }).isSvg,
+          };
+        }
+        setCoinIcons(icons);
+      } catch (error) {
+        console.error("Error loading coin icons:", error);
       }
-      setCoinIcons(icons);
     };
 
     loadIcons();
