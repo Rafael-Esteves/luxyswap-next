@@ -28,16 +28,17 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 
+
 const formatNumericInput = (value: string) => {
   // Remove all characters except numbers and dots
-  let formatted = value.replace(/[^\d.]/g, '');
-  
+  let formatted = value.replace(/[^\d.]/g, "");
+
   // Ensure only one decimal point
-  const parts = formatted.split('.');
+  const parts = formatted.split(".");
   if (parts.length > 2) {
-    formatted = parts[0] + '.' + parts.slice(1).join('');
+    formatted = parts[0] + "." + parts.slice(1).join("");
   }
-  
+
   return formatted;
 };
 
@@ -69,8 +70,9 @@ export function Swapper() {
   }>({});
   const [toSearchTerm, setToSearchTerm] = useState("");
   const [fromSearchTerm, setFromSearchTerm] = useState("");
-  const [updateDirection, setUpdateDirection] = useState<'from' | 'to'>('from');
-  
+  const [updateDirection, setUpdateDirection] = useState<"from" | "to">("from");
+  const [isUserInput, setIsUserInput] = useState(false);
+
   // Add refs for search inputs
   const fromSearchInputRef = useRef<HTMLInputElement>(null);
   const toSearchInputRef = useRef<HTMLInputElement>(null);
@@ -88,23 +90,23 @@ export function Swapper() {
 
   const fromFontSize = useDynamicFontSize(fromValue, 4);
   const toFontSize = useDynamicFontSize(toValue, 4);
-  
+
   // Force font size update when values change programmatically
   useEffect(() => {
     // This empty dependency effect ensures font size updates
     // whenever fromValue or toValue changes from any source
   }, [fromValue, toValue]);
-  
+
   // Use our enhanced hooks
-  const { 
-    pairData, 
-    isLoading: isPairLoading, 
+  const {
+    pairData,
+    isLoading: isPairLoading,
     error: pairError,
     calculateSettleAmount,
     calculateDepositAmount,
     unsupportedPair,
   } = usePairData(fromCoinName, toCoinName);
-  
+
   const {
     quote,
     isQuoteLoading,
@@ -113,18 +115,29 @@ export function Swapper() {
     isShiftLoading,
     shiftError,
     getQuote,
-    createShift
+    createShift,
   } = useShift();
 
-  const updateCoinNetworks = useCallback((coinSymbol: string, setter: React.Dispatch<React.SetStateAction<string[]>>, coins: Coin[]) => {
-    const selectedCoin = coins.find(coin => coin.coin === coinSymbol);
-    if (selectedCoin && selectedCoin.networks && selectedCoin.networks.length > 0) {
-      setter(selectedCoin.networks);
-      return selectedCoin.networks[0]; // Return default network
-    }
-    setter([]);
-    return "";
-  }, [coins]);
+  const updateCoinNetworks = useCallback(
+    (
+      coinSymbol: string,
+      setter: React.Dispatch<React.SetStateAction<string[]>>,
+      coins: Coin[]
+    ) => {
+      const selectedCoin = coins.find((coin) => coin.coin === coinSymbol);
+      if (
+        selectedCoin &&
+        selectedCoin.networks &&
+        selectedCoin.networks.length > 0
+      ) {
+        setter(selectedCoin.networks);
+        return selectedCoin.networks[0]; // Return default network
+      }
+      setter([]);
+      return "";
+    },
+    [coins]
+  );
 
   // Fetch coins on initial load
   useEffect(() => {
@@ -134,12 +147,20 @@ export function Swapper() {
         .then((data) => {
           const mergedCoins: Coin[] = data.flat();
           setCoins(mergedCoins);
-          
+
           // Initialize networks for current coins
           if (mergedCoins.length > 0) {
-            const defaultFromNetwork = updateCoinNetworks(fromCoinName, setFromCoinNetworks, mergedCoins);
-            const defaultToNetwork = updateCoinNetworks(toCoinName, setToCoinNetworks, mergedCoins);
-            
+            const defaultFromNetwork = updateCoinNetworks(
+              fromCoinName,
+              setFromCoinNetworks,
+              mergedCoins
+            );
+            const defaultToNetwork = updateCoinNetworks(
+              toCoinName,
+              setToCoinNetworks,
+              mergedCoins
+            );
+
             // Set default networks if they're not already set
             if (!fromNetwork && defaultFromNetwork) {
               setFromNetwork(defaultFromNetwork);
@@ -159,12 +180,12 @@ export function Swapper() {
     const loadIcons = async () => {
       try {
         // Fetch metadata.json via URL
-        const response = await fetch('/coin-icons/metadata.json');
+        const response = await fetch("/coin-icons/metadata.json");
         if (!response.ok) {
-          throw new Error('Failed to load coin metadata');
+          throw new Error("Failed to load coin metadata");
         }
         const metadata = await response.json();
-        
+
         const icons: typeof coinIcons = {};
         for (const [coin, meta] of Object.entries(metadata)) {
           icons[coin] = {
@@ -185,12 +206,12 @@ export function Swapper() {
   useEffect(() => {
     // Skip if we don't have pair data or no direction is set
     if (!pairData || !updateDirection) return;
-    
+
     // Skip during active quote loading to prevent loops
     if (isQuoteLoading) return;
-    
+
     // Skip empty values or default values
-    if (updateDirection === 'from') {
+    if (updateDirection === "from") {
       // Only calculate to value when from value changes and is valid
       if (fromValue && fromValue !== "0.00") {
         const numFromValue = Number(fromValue);
@@ -202,7 +223,7 @@ export function Swapper() {
           }
         }
       }
-    } else if (updateDirection === 'to') {
+    } else if (updateDirection === "to") {
       // Only calculate from value when to value changes and is valid
       if (toValue && toValue !== "0.00") {
         const numToValue = Number(toValue);
@@ -215,78 +236,99 @@ export function Swapper() {
         }
       }
     }
-  }, [pairData, updateDirection, fromCoinName, toCoinName, fromValue, toValue, calculateSettleAmount, calculateDepositAmount, setFromCoin, setToCoin, toValue, isQuoteLoading]);
+  }, [
+    pairData,
+    updateDirection,
+    fromCoinName,
+    toCoinName,
+    fromValue,
+    toValue,
+    calculateSettleAmount,
+    calculateDepositAmount,
+    setFromCoin,
+    setToCoin,
+    toValue,
+    isQuoteLoading,
+  ]);
+
 
   // Second effect: Handle quote fetching with debounce
   useEffect(() => {
-    
+    if (!isUserInput) return;
+
+    setIsUserInput(false);
+
     // Skip if necessary data is missing
     if (!pairData) return;
     if (!updateDirection) return;
-    
+
     // Only proceed with valid values
     const numFromValue = Number(fromValue);
     const numToValue = Number(toValue);
-    
-    // Determine if we should get a quote based on the update direction  or if the network changed
-    const shouldGetQuote = 
-      (updateDirection === 'from' && !isNaN(numFromValue) && numFromValue > 0) ||
-      (updateDirection === 'to' && !isNaN(numToValue) && numToValue > 0) ||
-      (fromNetwork !== pairData?.depositNetwork || toNetwork !== pairData?.settleNetwork);
 
-    
+    // Determine if we should get a quote based on the update direction  or if the network changed
+    const shouldGetQuote =
+      (updateDirection === "from" &&
+        !isNaN(numFromValue) &&
+        numFromValue > 0) ||
+      (updateDirection === "to" && !isNaN(numToValue) && numToValue > 0) ||
+      fromNetwork !== pairData?.depositNetwork ||
+      toNetwork !== pairData?.settleNetwork;
+
     if (!shouldGetQuote) return;
-        
+
     // Setup debounce timer
-      
-      if (updateDirection === 'from') {
-        // Only request if within limits
-        if (numFromValue >= Number(pairData.min) && numFromValue <= Number(pairData.max)) {
-          getQuote({
-            depositCoin: fromCoinName,
-            settleCoin: toCoinName,
-            depositAmount: fromValue,
-            settleAmount: "",
-            depositNetwork: fromNetwork ,
-            settleNetwork: toNetwork 
-          });
-        }
-      } else if (updateDirection === 'to') {
+
+    if (updateDirection === "from") {
+      // Only request if within limits
+      if (
+        numFromValue >= Number(pairData.min) &&
+        numFromValue <= Number(pairData.max)
+      ) {
         getQuote({
           depositCoin: fromCoinName,
           settleCoin: toCoinName,
-          depositAmount: "",
-          settleAmount: toValue,
-          depositNetwork: fromNetwork || pairData?.depositNetwork || "",
-          settleNetwork: toNetwork || pairData?.settleNetwork || ""
+          depositAmount: fromValue,
+          settleAmount: "",
+          depositNetwork: fromNetwork,
+          settleNetwork: toNetwork,
         });
       }
+    } else if (updateDirection === "to") {
+      getQuote({
+        depositCoin: fromCoinName,
+        settleCoin: toCoinName,
+        depositAmount: "",
+        settleAmount: toValue,
+        depositNetwork: fromNetwork || pairData?.depositNetwork || "",
+        settleNetwork: toNetwork || pairData?.settleNetwork || "",
+      });
+    }
     
-  }, [fromCoinName, toCoinName, fromValue, toValue, updateDirection, pairData, getQuote, fromNetwork, toNetwork]);
+  }, [
+    fromCoinName,
+    toCoinName,
+    fromValue,
+    toValue,
+    pairData,
+    fromNetwork,
+    toNetwork,
+  ]);
 
-  // Use separate functions with refs to track last input
-  const lastFromValueRef = React.useRef(fromValue);
-  const lastToValueRef = React.useRef(toValue);
-  
+
   // Handle input changes with manual update direction tracking
   const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatNumericInput(e.target.value);
-    // Only update if the value actually changed
-    if (formatted !== lastFromValueRef.current) {
-      lastFromValueRef.current = formatted;
-      setFromCoin(fromCoinName, formatted, fromNetwork);
-      setUpdateDirection('from');
-    }
+    setFromCoin(fromCoinName, formatted, fromNetwork);
+    setUpdateDirection("from");
+    setIsUserInput(true);
   };
 
   const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatNumericInput(e.target.value);
-    // Only update if the value actually changed
-    if (formatted !== lastToValueRef.current) {
-      lastToValueRef.current = formatted;
-      setToCoin(toCoinName, formatted, toNetwork);
-      setUpdateDirection('to');
-    }
+    setToCoin(toCoinName, formatted, toNetwork);
+    setUpdateDirection("to");
+    setIsUserInput(true);
   };
 
   // Handle shift creation response
@@ -333,14 +375,14 @@ export function Swapper() {
     if (fromValue === "0.00") {
       setFromCoin(fromCoinName, "", fromNetwork);
     }
-    setUpdateDirection('from');
+    setUpdateDirection("from");
   };
 
   const handleToFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (toValue === "0.00") {
       setToCoin(toCoinName, "", toNetwork);
     }
-    setUpdateDirection('to');
+    setUpdateDirection("to");
   };
 
   const handleFromBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -376,7 +418,7 @@ export function Swapper() {
       setSwapError("Invalid trading pair, please try a different combination");
       return;
     }
-    
+
     // Safely check min/max range
     const numFromValue = Number(fromValue);
     const minValue = Number(pairData.min);
@@ -388,26 +430,34 @@ export function Swapper() {
     }
 
     if (numFromValue < minValue) {
-      setSwapError(`Amount too small. Minimum is ${formatCurrencyValue(minValue)} ${fromCoinName}`);
+      setSwapError(
+        `Amount too small. Minimum is ${formatCurrencyValue(
+          minValue
+        )} ${fromCoinName}`
+      );
       return;
     }
-    
+
     if (numFromValue > maxValue) {
-      setSwapError(`Amount too large. Maximum is ${formatCurrencyValue(maxValue)} ${fromCoinName}`);
+      setSwapError(
+        `Amount too large. Maximum is ${formatCurrencyValue(
+          maxValue
+        )} ${fromCoinName}`
+      );
       return;
     }
-    
+
     // Clear any previous errors
     setSwapError("");
-    
+
     // Get a fresh quote before showing the address field
     getQuote({
-      depositCoin: fromCoinName, 
-      settleCoin: toCoinName, 
+      depositCoin: fromCoinName,
+      settleCoin: toCoinName,
       depositAmount: fromValue,
       settleAmount: "",
-      depositNetwork: fromNetwork ,
-      settleNetwork: toNetwork 
+      depositNetwork: fromNetwork,
+      settleNetwork: toNetwork,
     });
 
     // If all validations pass, show the address field
@@ -415,11 +465,11 @@ export function Swapper() {
   };
 
   const handleArrowClick = async () => {
-    if (!ethAddress || ethAddress.trim() === '') {
+    if (!ethAddress || ethAddress.trim() === "") {
       // Show error about missing address
       return;
     }
-    
+
     // Create the shift with correctly named parameters
     await createShift({
       depositCoin: fromCoinName,
@@ -432,19 +482,23 @@ export function Swapper() {
   };
 
   const SwapErrorDisplay = () => {
-    if (swapError) return <p className="text-red-500 text-xs mt-1">{swapError}</p>;
+    if (swapError)
+      return <p className="text-red-500 text-xs mt-1">{swapError}</p>;
     if (pairError) {
       if (unsupportedPair) {
         return (
           <p className="text-amber-400 text-xs mt-1">
-            This pair ({fromCoinName}-{toCoinName}) is not supported. Please try a different combination.
+            This pair ({fromCoinName}-{toCoinName}) is not supported. Please try
+            a different combination.
           </p>
         );
       }
       return <p className="text-red-500 text-xs mt-1">{pairError}</p>;
     }
-    if (quoteError) return <p className="text-red-500 text-xs mt-1">{quoteError}</p>;
-    if (shiftError) return <p className="text-red-500 text-xs mt-1">{shiftError}</p>;
+    if (quoteError)
+      return <p className="text-red-500 text-xs mt-1">{quoteError}</p>;
+    if (shiftError)
+      return <p className="text-red-500 text-xs mt-1">{shiftError}</p>;
     return null;
   };
 
@@ -457,7 +511,7 @@ export function Swapper() {
       }, 100);
     }
   }, [fromDropdownOpen]);
-  
+
   useEffect(() => {
     if (toDropdownOpen) {
       // Using setTimeout to ensure DOM is fully updated
@@ -473,18 +527,17 @@ export function Swapper() {
 
   // Add functions to update the networks when coins change
 
-
   // Create the network selector component
-  const NetworkSelector = ({ 
-    networks, 
-    selectedNetwork, 
-    onChange, 
-    isFrom = true 
-  }: { 
-    networks: string[], 
-    selectedNetwork: string, 
-    onChange: (network: string) => void,
-    isFrom?: boolean
+  const NetworkSelector = ({
+    networks,
+    selectedNetwork,
+    onChange,
+    isFrom = true,
+  }: {
+    networks: string[];
+    selectedNetwork: string;
+    onChange: (network: string) => void;
+    isFrom?: boolean;
   }) => {
     if (networks.length <= 1) {
       return (
@@ -497,13 +550,20 @@ export function Swapper() {
     return (
       <div className="flex justify-center text-xs">
         <span className="mr-2 italic">Network:</span>
-        <select 
-          value={selectedNetwork || networks[0]} 
-          onChange={(e) => onChange(e.target.value)}
+        <select
+          value={selectedNetwork || networks[0]}
+          onChange={(e) => {
+            setIsUserInput(true);
+            onChange(e.target.value);
+          }}
           className="bg-transparent border-none text-white/70 text-xs italic cursor-pointer focus:outline-none"
         >
-          {networks.map(network => (
-            <option key={network} value={network} className="bg-black text-white">
+          {networks.map((network) => (
+            <option
+              key={network}
+              value={network}
+              className="bg-black text-white"
+            >
               {network}
             </option>
           ))}
@@ -541,7 +601,11 @@ export function Swapper() {
                   />
                 </div>
                 {renderCoinOptions((coin) => {
-                  const defaultNetwork = updateCoinNetworks(coin, setFromCoinNetworks, coins);
+                  const defaultNetwork = updateCoinNetworks(
+                    coin,
+                    setFromCoinNetworks,
+                    coins
+                  );
                   setFromCoin(coin, fromValue, defaultNetwork);
                   setFromDropdownOpen(false);
                   setFromSearchTerm("");
@@ -562,13 +626,17 @@ export function Swapper() {
           {pairData && (
             <div className="w-full text-xs text-white/70 px-2 flex flex-col gap-1">
               <div className="flex justify-between">
-                <span>Min: {formatCurrencyValue(pairData.min)} {fromCoinName}</span>
-                <span>Max: {formatCurrencyValue(pairData.max)} {fromCoinName}</span>
+                <span>
+                  Min: {formatCurrencyValue(pairData.min)} {fromCoinName}
+                </span>
+                <span>
+                  Max: {formatCurrencyValue(pairData.max)} {fromCoinName}
+                </span>
               </div>
-              <NetworkSelector 
-                networks={fromCoinNetworks} 
-                selectedNetwork={fromNetwork} 
-                onChange={setFromNetwork} 
+              <NetworkSelector
+                networks={fromCoinNetworks}
+                selectedNetwork={fromNetwork}
+                onChange={setFromNetwork}
                 isFrom={true}
               />
             </div>
@@ -620,7 +688,11 @@ export function Swapper() {
                   />
                 </div>
                 {renderCoinOptions((coin) => {
-                  const defaultNetwork = updateCoinNetworks(coin, setToCoinNetworks, coins);
+                  const defaultNetwork = updateCoinNetworks(
+                    coin,
+                    setToCoinNetworks,
+                    coins
+                  );
                   setToCoin(coin, toValue, defaultNetwork);
                   setToDropdownOpen(false);
                   setToSearchTerm("");
@@ -641,10 +713,10 @@ export function Swapper() {
           </div>
           {pairData && (
             <div className="w-full text-xs text-white/70 px-2">
-              <NetworkSelector 
-                networks={toCoinNetworks} 
-                selectedNetwork={toNetwork} 
-                onChange={setToNetwork} 
+              <NetworkSelector
+                networks={toCoinNetworks}
+                selectedNetwork={toNetwork}
+                onChange={setToNetwork}
                 isFrom={false}
               />
             </div>
@@ -675,10 +747,11 @@ export function Swapper() {
                   </Tooltip>
                 </TooltipProvider>
                 <span>
-                  1 {fromCoinName} = {quote?.rate || pairData?.rate || "..."} {toCoinName}
+                  1 {fromCoinName} = {quote?.rate || pairData?.rate || "..."}{" "}
+                  {toCoinName}
                 </span>
               </div>
-              
+
               <div className="flex justify-between px-4 text-sm font-gravesend">
                 <TooltipProvider>
                   <Tooltip>
@@ -697,7 +770,7 @@ export function Swapper() {
                   {pairData?.depositNetworkFee || "Varies"} {fromCoinName}
                 </span>
               </div>
-              
+
               <div className="bg-[#D9D9D94D] rounded-full w-full p-2 flex items-center justify-between">
                 <Input
                   placeholder={`YOUR ${toCoinName} ADDRESS`}
@@ -707,7 +780,9 @@ export function Swapper() {
                 />
                 <Button
                   onClick={handleArrowClick}
-                  disabled={isShiftLoading || !ethAddress || ethAddress.trim() === ''}
+                  disabled={
+                    isShiftLoading || !ethAddress || ethAddress.trim() === ""
+                  }
                   className="bg-transparent border-none p-0 m-0"
                 >
                   {isShiftLoading ? (
