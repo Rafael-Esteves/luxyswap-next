@@ -9,33 +9,20 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { depositCoin, settleCoin, depositAmount, settleAmount } = req.body;
+  const {
+    depositCoin,
+    settleCoin,
+    depositAmount,
+    settleAmount,
+    depositNetwork,
+    settleNetwork,
+  } = req.body;
 
   if (!depositCoin || !settleCoin || !(depositAmount || settleAmount)) {
     return res.status(400).json({ error: "Missing required parameters" });
   }
 
   try {
-    // Get the network information
-    const coinsResponse = await fetch("https://sideshift.ai/api/v2/coins");
-    const coins = await coinsResponse.json();
-
-    // Find the network for each coin
-    const depositCoinData = coins.find(
-      (c: any) => c.coin.toLowerCase() === depositCoin.toLowerCase()
-    );
-    const settleCoinData = coins.find(
-      (c: any) => c.coin.toLowerCase() === settleCoin.toLowerCase()
-    );
-
-    if (!depositCoinData || !settleCoinData) {
-      return res.status(400).json({ error: "Invalid coin" });
-    }
-
-    // Use the first network for each coin
-    const depositNetwork = depositCoinData.networks[0];
-    const settleNetwork = settleCoinData.networks[0];
-
     const response = await fetch("https://sideshift.ai/api/v2/quotes", {
       method: "POST",
       headers: {

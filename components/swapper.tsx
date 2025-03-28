@@ -10,7 +10,7 @@ import {
 import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Coin } from "@/types/Coin";
 import { useDynamicFontSize } from "@/hooks/use-dynamic-font-size";
 import { motion, AnimatePresence } from "framer-motion";
@@ -76,12 +76,14 @@ export function Swapper() {
   const toSearchInputRef = useRef<HTMLInputElement>(null);
 
   const {
-    fromCoin: { coin: fromCoinName, value: fromValue },
-    toCoin: { coin: toCoinName, value: toValue },
+    fromCoin: { coin: fromCoinName, value: fromValue, network: fromNetwork },
+    toCoin: { coin: toCoinName, value: toValue, network: toNetwork },
     ethAddress,
     setFromCoin,
     setToCoin,
     setEthAddress,
+    setFromNetwork,
+    setToNetwork,
   } = useSwapStore();
 
   const fromFontSize = useDynamicFontSize(fromValue, 4);
@@ -114,6 +116,16 @@ export function Swapper() {
     createShift
   } = useShift();
 
+  const updateCoinNetworks = useCallback((coinSymbol: string, setter: React.Dispatch<React.SetStateAction<string[]>>, coins: Coin[]) => {
+    const selectedCoin = coins.find(coin => coin.coin === coinSymbol);
+    if (selectedCoin && selectedCoin.networks && selectedCoin.networks.length > 0) {
+      setter(selectedCoin.networks);
+      return selectedCoin.networks[0]; // Return default network
+    }
+    setter([]);
+    return "";
+  }, [coins]);
+
   // Fetch coins on initial load
   useEffect(() => {
     const fetchCoins = async () => {
@@ -122,6 +134,20 @@ export function Swapper() {
         .then((data) => {
           const mergedCoins: Coin[] = data.flat();
           setCoins(mergedCoins);
+          
+          // Initialize networks for current coins
+          if (mergedCoins.length > 0) {
+            const defaultFromNetwork = updateCoinNetworks(fromCoinName, setFromCoinNetworks, mergedCoins);
+            const defaultToNetwork = updateCoinNetworks(toCoinName, setToCoinNetworks, mergedCoins);
+            
+            // Set default networks if they're not already set
+            if (!fromNetwork && defaultFromNetwork) {
+              setFromNetwork(defaultFromNetwork);
+            }
+            if (!toNetwork && defaultToNetwork) {
+              setToNetwork(defaultToNetwork);
+            }
+          }
         });
     };
 
@@ -202,15 +228,16 @@ export function Swapper() {
     const numFromValue = Number(fromValue);
     const numToValue = Number(toValue);
     
-    // Determine if we should get a quote based on the update direction
+    // Determine if we should get a quote based on the update direction  or if the network changed
     const shouldGetQuote = 
       (updateDirection === 'from' && !isNaN(numFromValue) && numFromValue > 0) ||
-      (updateDirection === 'to' && !isNaN(numToValue) && numToValue > 0);
+      (updateDirection === 'to' && !isNaN(numToValue) && numToValue > 0) ||
+      (fromNetwork !== pairData?.depositNetwork || toNetwork !== pairData?.settleNetwork);
+
     
     if (!shouldGetQuote) return;
         
     // Setup debounce timer
-    const timer = setTimeout(() => {
       
       if (updateDirection === 'from') {
         // Only request if within limits
@@ -220,8 +247,8 @@ export function Swapper() {
             settleCoin: toCoinName,
             depositAmount: fromValue,
             settleAmount: "",
-            depositNetwork: pairData?.depositNetwork || "",
-            settleNetwork: pairData?.settleNetwork || ""
+            depositNetwork: fromNetwork ,
+            settleNetwork: toNetwork 
           });
         }
       } else if (updateDirection === 'to') {
@@ -230,14 +257,12 @@ export function Swapper() {
           settleCoin: toCoinName,
           depositAmount: "",
           settleAmount: toValue,
-          depositNetwork: pairData?.depositNetwork || "",
-          settleNetwork: pairData?.settleNetwork || ""
+          depositNetwork: fromNetwork || pairData?.depositNetwork || "",
+          settleNetwork: toNetwork || pairData?.settleNetwork || ""
         });
       }
-    }, 5000);
     
-    return () => clearTimeout(timer);
-  }, [fromCoinName, toCoinName, fromValue, toValue, updateDirection, pairData, getQuote]);
+  }, [fromCoinName, toCoinName, fromValue, toValue, updateDirection, pairData, getQuote, fromNetwork, toNetwork]);
 
   // Use separate functions with refs to track last input
   const lastFromValueRef = React.useRef(fromValue);
@@ -249,7 +274,7 @@ export function Swapper() {
     // Only update if the value actually changed
     if (formatted !== lastFromValueRef.current) {
       lastFromValueRef.current = formatted;
-      setFromCoin(fromCoinName, formatted);
+      setFromCoin(fromCoinName, formatted, fromNetwork);
       setUpdateDirection('from');
     }
   };
@@ -259,7 +284,7 @@ export function Swapper() {
     // Only update if the value actually changed
     if (formatted !== lastToValueRef.current) {
       lastToValueRef.current = formatted;
-      setToCoin(toCoinName, formatted);
+      setToCoin(toCoinName, formatted, toNetwork);
       setUpdateDirection('to');
     }
   };
@@ -306,27 +331,27 @@ export function Swapper() {
 
   const handleFromFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (fromValue === "0.00") {
-      setFromCoin(fromCoinName, "");
+      setFromCoin(fromCoinName, "", fromNetwork);
     }
     setUpdateDirection('from');
   };
 
   const handleToFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (toValue === "0.00") {
-      setToCoin(toCoinName, "");
+      setToCoin(toCoinName, "", toNetwork);
     }
     setUpdateDirection('to');
   };
 
   const handleFromBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (fromValue === "") {
-      setFromCoin(fromCoinName, "0.00");
+      setFromCoin(fromCoinName, "0.00", fromNetwork);
     }
   };
 
   const handleToBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (toValue === "") {
-      setToCoin(toCoinName, "0.00");
+      setToCoin(toCoinName, "0.00", toNetwork);
     }
   };
 
@@ -381,8 +406,8 @@ export function Swapper() {
       settleCoin: toCoinName, 
       depositAmount: fromValue,
       settleAmount: "",
-      depositNetwork: pairData.depositNetwork || "",
-      settleNetwork: pairData.settleNetwork || ""
+      depositNetwork: fromNetwork ,
+      settleNetwork: toNetwork 
     });
 
     // If all validations pass, show the address field
@@ -401,8 +426,8 @@ export function Swapper() {
       settleCoin: toCoinName,
       depositAmount: fromValue,
       settleAddress: ethAddress,
-      depositNetwork: pairData?.depositNetwork || "",
-      settleNetwork: pairData?.settleNetwork || ""
+      depositNetwork: fromNetwork,
+      settleNetwork: toNetwork,
     });
   };
 
@@ -442,6 +467,51 @@ export function Swapper() {
     }
   }, [toDropdownOpen]);
 
+  // Add these state variables inside the Swapper function
+  const [fromCoinNetworks, setFromCoinNetworks] = useState<string[]>([]);
+  const [toCoinNetworks, setToCoinNetworks] = useState<string[]>([]);
+
+  // Add functions to update the networks when coins change
+
+
+  // Create the network selector component
+  const NetworkSelector = ({ 
+    networks, 
+    selectedNetwork, 
+    onChange, 
+    isFrom = true 
+  }: { 
+    networks: string[], 
+    selectedNetwork: string, 
+    onChange: (network: string) => void,
+    isFrom?: boolean
+  }) => {
+    if (networks.length <= 1) {
+      return (
+        <div className="flex justify-center text-xs italic">
+          <span>Network: {networks[0] || selectedNetwork || "Default"}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex justify-center text-xs">
+        <span className="mr-2 italic">Network:</span>
+        <select 
+          value={selectedNetwork || networks[0]} 
+          onChange={(e) => onChange(e.target.value)}
+          className="bg-transparent border-none text-white/70 text-xs italic cursor-pointer focus:outline-none"
+        >
+          {networks.map(network => (
+            <option key={network} value={network} className="bg-black text-white">
+              {network}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  };
+
   return (
     <div className="select-none flex flex-col gap-2 items-center relative">
       <div>
@@ -471,7 +541,8 @@ export function Swapper() {
                   />
                 </div>
                 {renderCoinOptions((coin) => {
-                  setFromCoin(coin, fromValue);
+                  const defaultNetwork = updateCoinNetworks(coin, setFromCoinNetworks, coins);
+                  setFromCoin(coin, fromValue, defaultNetwork);
                   setFromDropdownOpen(false);
                   setFromSearchTerm("");
                 }, fromSearchTerm)}
@@ -494,11 +565,12 @@ export function Swapper() {
                 <span>Min: {formatCurrencyValue(pairData.min)} {fromCoinName}</span>
                 <span>Max: {formatCurrencyValue(pairData.max)} {fromCoinName}</span>
               </div>
-              {pairData.depositNetwork && pairData.settleNetwork && (
-                <div className="flex justify-center text-xs italic">
-                  <span>Network: {pairData.depositNetwork}</span>
-                </div>
-              )}
+              <NetworkSelector 
+                networks={fromCoinNetworks} 
+                selectedNetwork={fromNetwork} 
+                onChange={setFromNetwork} 
+                isFrom={true}
+              />
             </div>
           )}
           <SwapErrorDisplay />
@@ -548,7 +620,8 @@ export function Swapper() {
                   />
                 </div>
                 {renderCoinOptions((coin) => {
-                  setToCoin(coin, toValue);
+                  const defaultNetwork = updateCoinNetworks(coin, setToCoinNetworks, coins);
+                  setToCoin(coin, toValue, defaultNetwork);
                   setToDropdownOpen(false);
                   setToSearchTerm("");
                 }, toSearchTerm)}
@@ -566,9 +639,14 @@ export function Swapper() {
               )}
             />
           </div>
-          {pairData && pairData.settleNetwork && (
+          {pairData && (
             <div className="w-full text-xs text-white/70 px-2">
-              <span className="italic">Network: {pairData.settleNetwork}</span>
+              <NetworkSelector 
+                networks={toCoinNetworks} 
+                selectedNetwork={toNetwork} 
+                onChange={setToNetwork} 
+                isFrom={false}
+              />
             </div>
           )}
         </div>

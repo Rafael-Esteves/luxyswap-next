@@ -12,6 +12,8 @@ export default async function handler(
   const {
     depositCoin,
     settleCoin,
+    depositNetwork,
+    settleNetwork,
     amount,
     settleAddress,
     refundAddress,
@@ -53,7 +55,7 @@ export default async function handler(
         console.log("Error creating fixed shift");
         console.log(errorData);
         return res.status(response.status).json(errorData);
-      } 
+      }
 
       const data = await response.json();
       console.log("Fixed shift created");
@@ -63,24 +65,20 @@ export default async function handler(
 
     // If no quoteId is provided, fall back to getting network info and creating a variable shift
     console.log("No quote ID provided, getting coins");
-    const coinsResponse = await fetch("https://sideshift.ai/api/v2/coins");
-    const coins = await coinsResponse.json();
+    // const coinsResponse = await fetch("https://sideshift.ai/api/v2/coins");
+    // const coins = await coinsResponse.json();
     // Find the network for each coin
-    const fromCoinData = coins.find(
-      (c: any) => c.coin.toLowerCase() === depositCoin.toLowerCase()
-    );
-    const toCoinData = coins.find(
-      (c: any) => c.coin.toLowerCase() === settleCoin.toLowerCase()
-    );
+    // const fromCoinData = coins.find(
+    //   (c: any) => c.coin.toLowerCase() === depositCoin.toLowerCase()
+    // );
+    // const toCoinData = coins.find(
+    //   (c: any) => c.coin.toLowerCase() === settleCoin.toLowerCase()
+    // );
 
-    if (!fromCoinData || !toCoinData) {
-      console.log("Invalid coin");
-      return res.status(400).json({ error: "Invalid coin" });
-    }
-
-    // Use the first network for each coin
-    const fromNetwork = fromCoinData.networks[0];
-    const toNetwork = toCoinData.networks[0];
+    // if (!fromCoinData || !toCoinData) {
+    //   console.log("Invalid coin");
+    //   return res.status(400).json({ error: "Invalid coin" });
+    // }
 
     const response = await fetch(
       "https://sideshift.ai/api/v2/shifts/variable",
@@ -96,9 +94,9 @@ export default async function handler(
         },
         body: JSON.stringify({
           depositCoin: depositCoin,
-          depositNetwork: fromNetwork,
+          depositNetwork: depositNetwork,
           settleCoin: settleCoin,
-          settleNetwork: toNetwork,
+          settleNetwork: settleNetwork,
           // amount,
           affiliateId: process.env.SIDESHIFT_AFFILIATE_ID,
           settleAddress,
