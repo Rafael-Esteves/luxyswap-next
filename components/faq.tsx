@@ -11,21 +11,19 @@ export function Faq() {
       <AccordionItem value="item-1">
         <AccordionTrigger>Como faço um swap de criptomoedas?</AccordionTrigger>
         <AccordionContent>
-          Yes. It adheres to the WAI-ARIA design pattern.
+          Sim. Ele adere ao padrão de design WAI-ARIA.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
         <AccordionTrigger>Como funcionam as taxas?</AccordionTrigger>
         <AccordionContent>
-          Yes. It comes with default styles that matches the other
-          components&apos; aesthetic.
+          Sim. Ele vem com estilos padrão que combinam com a estética dos outros componentes.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
         <AccordionTrigger>O que é o Depix?</AccordionTrigger>
         <AccordionContent>
-          Yes. It&apos;s animated by default, but you can disable it if you
-          prefer.
+          Sim. Ele é animado por padrão, mas você pode desativar se preferir.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-4">
@@ -33,15 +31,13 @@ export function Faq() {
           Posso usar FIAT para comprar criptos?
         </AccordionTrigger>
         <AccordionContent>
-          Yes. It&apos;s animated by default, but you can disable it if you
-          prefer.
+          Sim. Ele é animado por padrão, mas você pode desativar se preferir.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-5">
         <AccordionTrigger>Como garantem minha privacidade?</AccordionTrigger>
         <AccordionContent>
-          Yes. It&apos;s animated by default, but you can disable it if you
-          prefer.
+          Sim. Ele é animado por padrão, mas você pode desativar se preferir.
         </AccordionContent>
       </AccordionItem>
     </Accordion>

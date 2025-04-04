@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpDown, ChevronDown, Info } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Info, MoveRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -403,19 +403,19 @@ export function Swapper() {
     // First check if we have a valid input amount
     if (fromValue === "0.00" || fromValue === "") {
       // Add error state/message here about invalid amount
-      setSwapError("Please enter a valid amount");
+      setSwapError("Por favor, insira um valor válido");
       return;
     }
 
     // Check if pair data is still loading
     if (isPairLoading) {
-      setSwapError("Please wait while we load trading pair data");
+      setSwapError("Por favor, aguarde enquanto carregamos os dados do par de negociação");
       return;
     }
 
     // Ensure we have valid pair data before proceeding
     if (!pairData) {
-      setSwapError("Invalid trading pair, please try a different combination");
+      setSwapError("Par de negociação inválido, por favor tente uma combinação diferente");
       return;
     }
 
@@ -425,13 +425,13 @@ export function Swapper() {
     const maxValue = Number(pairData.max);
 
     if (isNaN(numFromValue) || isNaN(minValue) || isNaN(maxValue)) {
-      setSwapError("Invalid amount format");
+      setSwapError("Formato de valor inválido");
       return;
     }
 
     if (numFromValue < minValue) {
       setSwapError(
-        `Amount too small. Minimum is ${formatCurrencyValue(
+        `Valor muito pequeno. O mínimo é ${formatCurrencyValue(
           minValue
         )} ${fromCoinName}`
       );
@@ -440,7 +440,7 @@ export function Swapper() {
 
     if (numFromValue > maxValue) {
       setSwapError(
-        `Amount too large. Maximum is ${formatCurrencyValue(
+        `Valor muito grande. O máximo é ${formatCurrencyValue(
           maxValue
         )} ${fromCoinName}`
       );
@@ -488,8 +488,7 @@ export function Swapper() {
       if (unsupportedPair) {
         return (
           <p className="text-amber-400 text-xs mt-1">
-            This pair ({fromCoinName}-{toCoinName}) is not supported. Please try
-            a different combination.
+            Este par ({fromCoinName}-{toCoinName}) não é suportado. Por favor, tente uma combinação diferente.
           </p>
         );
       }
@@ -542,14 +541,14 @@ export function Swapper() {
     if (networks.length <= 1) {
       return (
         <div className="flex justify-center text-xs italic">
-          <span>Network: {networks[0] || selectedNetwork || "Default"}</span>
+          <span>Rede: {networks[0] || selectedNetwork || "Padrão"}</span>
         </div>
       );
     }
 
     return (
       <div className="flex justify-center text-xs">
-        <span className="mr-2 italic">Network:</span>
+        <span className="mr-2 italic">Rede:</span>
         <select
           value={selectedNetwork || networks[0]}
           onChange={(e) => {
@@ -593,11 +592,11 @@ export function Swapper() {
                 <div className="sticky top-0 p-2 bg-[#000000]/95 z-10 w-full">
                   <input
                     type="text"
-                    placeholder="Search coins..."
+                    placeholder="Buscar moedas..."
                     value={fromSearchTerm}
                     onChange={(e) => setFromSearchTerm(e.target.value)}
                     ref={fromSearchInputRef}
-                    className="w-full bg-white/10 text-white placeholder:text-white/50 rounded-lg px-3 py-2 text-sm focus:outline-none"
+                    className="w-full bg-transparent border border-white/20 text-white px-2 py-1 rounded-md text-sm focus:outline-none focus:border-white/50"
                   />
                 </div>
                 {renderCoinOptions((coin) => {
@@ -676,15 +675,15 @@ export function Swapper() {
                 </span>
                 <ChevronDown className="size-4 lg:size-8 mt-2" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-[#000000]/80 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-2 lg:px-8 px-4 rounded-3xl lg:rounded-[50px] max-h-[400px] max-w-80 lg:max-w-[650px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+              <DropdownMenuContent className="bg-[#000000]/80 w-full border-none outline-none focus-visible:ring-0 focus-visible:ring-transparent flex flex-col items-start justify-start gap-2 lg:px-8 px-4 rounded-3xl max-w-80 lg:max-w-[650px] max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
                 <div className="sticky top-0 p-2 bg-[#000000]/95 z-10 w-full">
                   <input
                     type="text"
-                    placeholder="Search coins..."
+                    placeholder="Buscar moedas..."
                     value={toSearchTerm}
                     onChange={(e) => setToSearchTerm(e.target.value)}
                     ref={toSearchInputRef}
-                    className="w-full bg-white/10 text-white placeholder:text-white/50 rounded-lg px-3 py-2 text-sm focus:outline-none"
+                    className="w-full bg-transparent border border-white/20 text-white px-2 py-1 rounded-md text-sm focus:outline-none focus:border-white/50"
                   />
                 </div>
                 {renderCoinOptions((coin) => {
@@ -737,17 +736,17 @@ export function Swapper() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex items-center gap-1 cursor-help">
-                        <span>Rate:</span>
+                        <span>Taxa:</span>
                         <Info className="h-3 w-3" />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Exchange rate between currencies</p>
+                      <p>Taxa de câmbio entre moedas</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
                 <span>
-                  1 {fromCoinName} = {quote?.rate || pairData?.rate || "..."}{" "}
+                  1 {fromCoinName} = {formatCurrencyValue(quote?.rate || pairData?.rate || "...")}{" "}
                   {toCoinName}
                 </span>
               </div>
@@ -757,44 +756,43 @@ export function Swapper() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex items-center gap-1 cursor-help">
-                        <span>Network Fee:</span>
+                        <span>Taxa de Rede:</span>
                         <Info className="h-3 w-3" />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Blockchain network transaction fee</p>
+                      <p>Taxa cobrada pela rede para processar a transação</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
                 <span>
-                  {pairData?.depositNetworkFee || "Varies"} {fromCoinName}
+                  {pairData?.depositNetworkFee || "~0.0002"} {toCoinName}
                 </span>
               </div>
 
-              <div className="bg-[#D9D9D94D] rounded-full w-full p-2 flex items-center justify-between">
-                <Input
-                  placeholder={`YOUR ${toCoinName} ADDRESS`}
+              <div className="px-4">
+                <input
+                  type="text"
                   value={ethAddress}
                   onChange={(e) => setEthAddress(e.target.value)}
-                  className="font-medium bg-transparent border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 font-scandia uppercase text-base tracking-tighter select-none text-white"
+                  placeholder={`SEU ENDEREÇO DE ${toCoinName}`}
+                  className="w-full bg-white/10 p-3 rounded-lg text-white placeholder-white/50 text-sm"
                 />
+              </div>
+
+              <div className="px-4 pt-2">
                 <Button
                   onClick={handleArrowClick}
-                  disabled={
-                    isShiftLoading || !ethAddress || ethAddress.trim() === ""
-                  }
-                  className="bg-transparent border-none p-0 m-0"
+                  disabled={isShiftLoading || !ethAddress}
+                  className="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg flex items-center justify-center gap-2"
                 >
                   {isShiftLoading ? (
-                    <div className="animate-spin size-6 rounded-full border-2 border-white border-t-transparent" />
+                    <>Processando...</>
                   ) : (
-                    <Image
-                      src="/icons/arrow-btn-purple.svg"
-                      className="cursor-pointer"
-                      alt="Create Shift"
-                      width={87}
-                      height={49}
-                    />
+                    <>
+                      Confirmar Swap
+                      <MoveRight className="h-5 w-5" />
+                    </>
                   )}
                 </Button>
               </div>

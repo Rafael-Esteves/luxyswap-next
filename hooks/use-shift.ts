@@ -94,14 +94,14 @@ export function useShift() {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to get quote: ${response.statusText}`);
+        throw new Error(`Falha ao obter cotação: ${response.statusText}`);
       }
 
       const data = await response.json();
       setQuote(data);
       return data;
     } catch (error) {
-      console.error("Error getting quote:", error);
+      console.error("Erro ao obter cotação:", error);
       setQuoteError((error as Error).message);
       return null;
     } finally {
@@ -161,7 +161,7 @@ export function useShift() {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to create shift: ${response.statusText}`);
+        throw new Error(`Falha ao criar swap: ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -186,7 +186,7 @@ export function useShift() {
 
       return data;
     } catch (error) {
-      console.error("Error creating shift:", error);
+      console.error("Erro ao criar swap:", error);
       setShiftError((error as Error).message);
       return null;
     } finally {

@@ -39,14 +39,14 @@ export function usePairData(depositCoin: string, settleCoin: string) {
         if (!response.ok) {
           // Check if this is due to an unsupported pair
           if (data.unsupportedPair || response.status === 404) {
-            console.log(`Pair ${depositCoin}-${settleCoin} is not supported`);
+            console.log(`Par ${depositCoin}-${settleCoin} não é suportado`);
             setUnsupportedPair(true);
-            throw new Error(data.error || `This trading pair is not supported`);
+            throw new Error(data.error || `Este par de negociação não é suportado`);
           }
 
-          console.error("Failed to fetch pair data:", data);
+          console.error("Falha ao buscar dados do par:", data);
           throw new Error(
-            data.error || `Failed to fetch pair data: ${response.statusText}`
+            data.error || `Falha ao buscar dados do par: ${response.statusText}`
           );
         }
 
@@ -56,7 +56,7 @@ export function usePairData(depositCoin: string, settleCoin: string) {
           settleNetwork: data.settleNetwork || settleCoin,
         });
       } catch (error) {
-        console.error("Error fetching pair data:", error);
+        console.error("Erro ao buscar dados do par:", error);
         setError((error as Error).message);
         setPairData(null);
       } finally {
