@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRefundAddress } from "@/hooks/use-refund-address";
 
 // page
 
@@ -35,6 +36,11 @@ function SwapContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  
+  // Refund address state
+  const [refundAddress, setRefundAddress] = useState("");
+  const [refundMemo, setRefundMemo] = useState("");
+  const { setRefundAddress: submitRefundAddress, isLoading: isRefundLoading, error: refundError, success: refundSuccess } = useRefundAddress();
 
   useEffect(() => {
     if (!shiftId) return;
@@ -102,6 +108,12 @@ function SwapContent() {
         return "Cancelado";
       case "refunded":
         return "Reembolsado";
+      case "review":
+        return "Em Revisão";
+      case "refund":
+        return "Reembolso Pendente";
+      case "multiple":
+        return "Múltiplos Depósitos";
       default:
         return "Pendente";
     }
@@ -117,9 +129,39 @@ function SwapContent() {
       case "settled":
         return "text-green-400";
       case "failed":
+      case "refund":
         return "text-red-400";
+      case "review":
+      case "multiple":
+        return "text-orange-400";
       default:
         return "text-white";
+    }
+  };
+
+  const needsRefundAddress = (status: string) => {
+    const statuses = ["review", "refund", "multiple"];
+    return statuses.includes(status.toLowerCase());
+  };
+
+  const handleRefundSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!shiftId || !refundAddress) return;
+    
+    const success = await submitRefundAddress({
+      shiftId,
+      refundAddress,
+      refundMemo
+    });
+    
+    if (success) {
+      // Trigger a refresh of the shift data
+      const response = await fetch(`/api/sideshift/shift/${shiftId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setShiftData(data);
+      }
     }
   };
 
@@ -173,6 +215,63 @@ function SwapContent() {
                 Expira: {formatDate(shiftData.expiresAt)}
               </p>
             </div>
+
+            {/* Refund Address UI */}
+            {shiftData && needsRefundAddress(shiftData.status) && (
+              <div className="bg-orange-900/20 p-4 rounded-xl">
+                <h2 className="text-lg font-medium mb-2 text-orange-400">
+                  Endereço de Reembolso
+                </h2>
+                <p className="text-sm text-white/70 mb-4">
+                  Para receber seu reembolso, informe um endereço válido para receber os fundos.
+                </p>
+                
+                {refundSuccess ? (
+                  <div className="bg-green-900/20 p-3 rounded-lg text-green-400 text-sm mb-4">
+                    Endereço de reembolso definido com sucesso!
+                  </div>
+                ) : (
+                  <form onSubmit={handleRefundSubmit} className="space-y-3">
+                    <div>
+                      <input
+                        type="text"
+                        value={refundAddress}
+                        onChange={(e) => setRefundAddress(e.target.value)}
+                        placeholder={`Endereço de reembolso para ${shiftData.depositCoin.split("-")[0]}`}
+                        className="w-full bg-black/20 p-3 rounded-lg text-white placeholder-white/50 text-sm"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        value={refundMemo}
+                        onChange={(e) => setRefundMemo(e.target.value)}
+                        placeholder="Memo (opcional)"
+                        className="w-full bg-black/20 p-3 rounded-lg text-white placeholder-white/50 text-sm"
+                      />
+                      <p className="text-xs text-white/50 mt-1">
+                        Algumas moedas exigem um memo/tag adicional
+                      </p>
+                    </div>
+                    
+                    {refundError && (
+                      <div className="text-red-400 text-sm">
+                        Erro: {refundError}
+                      </div>
+                    )}
+                    
+                    <Button 
+                      type="submit" 
+                      className="w-full"
+                      disabled={isRefundLoading}
+                    >
+                      {isRefundLoading ? 'Salvando...' : 'Salvar Endereço de Reembolso'}
+                    </Button>
+                  </form>
+                )}
+              </div>
+            )}
 
             <div className="flex items-center justify-between">
               <div className="text-center">

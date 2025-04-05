@@ -751,7 +751,7 @@ export function Swapper() {
                 </span>
               </div>
 
-              <div className="flex justify-between px-4 text-sm font-gravesend">
+              {/* <div className="flex justify-between px-4 text-sm font-gravesend">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -768,7 +768,7 @@ export function Swapper() {
                 <span>
                   {pairData?.depositNetworkFee || "~0.0002"} {toCoinName}
                 </span>
-              </div>
+              </div> */}
 
               <div className="px-4">
                 <input
